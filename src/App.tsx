@@ -1,7 +1,13 @@
 import { Home } from "./pages/Home";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/services/query-client";
 
 function App() {
-  return <Home />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Home />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

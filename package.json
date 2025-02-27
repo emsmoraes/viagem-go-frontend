@@ -13,6 +13,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.9",
+    "@tanstack/react-query": "^5.66.9",
     "add": "^2.0.6",
     "axios": "^1.8.1",
     "button": "^1.1.1",
