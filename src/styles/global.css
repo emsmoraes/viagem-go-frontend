@@ -1,5 +1,9 @@
-@import "@fontsource/inter";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
 
-body {
-  font-family: theme("fontFamily.sans");
+@theme {
+  --font-display: "Inter", "sans-serif"; 
+  --color-mint-500: oklch(0.72 0.11 178);
 }
+
+
