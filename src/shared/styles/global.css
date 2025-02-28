@@ -23,7 +23,6 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
 
- 
   --primary: oklch(0.60 0.18 245);
   --primary-foreground: oklch(0.98 0 0);
 
@@ -112,7 +111,6 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -154,11 +152,12 @@
 
 @layer base {
   * {
-    @apply m-0 p-0 border-border outline-ring/50;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
   }
+
   button {
     @apply cursor-pointer;
   }
