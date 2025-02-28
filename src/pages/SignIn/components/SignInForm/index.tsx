@@ -1,0 +1,121 @@
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/shared/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
+import { Input } from "@/shared/components/ui/input";
+import { authStore } from "@/shared/store/auth.store";
+import { MdOutlineLock, MdOutlineMail, MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
+import { useSigninMutation } from "../../hooks/useSignIn";
+import { CgSpinner } from "react-icons/cg";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "E-mail inválido." }),
+  password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
+});
+
+function SignInForm() {
+  const [isRevealPassword, setIsRevealPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const { authenticate } = authStore();
+
+  const { signin, isLoadingSignin } = useSigninMutation({
+    onSuccess: (data) => {
+      authenticate(data.token.token, data.user);
+      navigate("/");
+    },
+    onError: () => {
+      toast.error("Erro ao logar, verifique suas credenciais.");
+    },
+  });
+
+  const form = useForm({
+    resolver: zodResolver(loginSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof loginSchema>) {
+    // signin(values); desabilitado para testes
+
+    authenticate("123", {
+      id: "123",
+      name: "John Doe",
+      email: "john.doe@example.com",
+      password: "123",
+    });
+
+    toast.success("Login realizado com sucesso!");
+
+    navigate("/");
+  }
+
+  return (
+    <div className="w-full space-y-6 bg-white rounded-lg shadow-md px-7 py-10">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <MdOutlineMail className="text-primary" size={20} /> E-mail
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="seuemail@exemplo.com" className="py-5" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <MdOutlineLock className="text-primary" size={20} /> Senha
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      type={isRevealPassword ? "text" : "password"}
+                      placeholder="********"
+                      className="py-5"
+                      {...field}
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => setIsRevealPassword(!isRevealPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-transparent hover:text-primary [&_svg:not([class*='size-'])]:size-5"
+                    >
+                      {isRevealPassword ? <MdOutlineVisibility /> : <MdOutlineVisibilityOff />}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full py-5 mt-5 [&_svg:not([class*='size-'])]:size-6">
+            {isLoadingSignin ? <CgSpinner className="animate-spin" /> : "Entrar"}
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
+}
+
+export default SignInForm;
