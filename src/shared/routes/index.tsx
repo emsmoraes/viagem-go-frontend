@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { CgSpinnerTwo } from "react-icons/cg";
 
@@ -9,6 +9,13 @@ import { AxiosError, AxiosResponse, isAxiosError } from "axios";
 import { authStore } from "../store/auth.store";
 import { SignIn } from "@/pages/SignIn";
 import api from "@/shared/services/axios/api";
+import Dashboard from "../components/layout/Dashboard";
+
+const HomeRouter = lazy(() =>
+  import("@/pages/Home").then((module) => ({
+    default: module.Home,
+  })),
+);
 
 export function Router(): ReactElement {
   const navigate = useNavigate();
@@ -60,8 +67,8 @@ export function Router(): ReactElement {
 
         {logged && (
           <Route element={<Private />}>
-            <Route element={<div>Layout</div>}>
-              <Route path="dashboard/*" element={<div>Dashboard</div>} />
+            <Route element={<Dashboard />}>
+              <Route path="/" element={<HomeRouter />} />
             </Route>
           </Route>
         )}

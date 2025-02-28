@@ -11,6 +11,7 @@ import { MdOutlineLock, MdOutlineMail, MdOutlineVisibility, MdOutlineVisibilityO
 import { useSigninMutation } from "../../hooks/useSignIn";
 import { CgSpinner } from "react-icons/cg";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "E-mail inválido." }),
@@ -19,12 +20,14 @@ const loginSchema = z.object({
 
 function SignInForm() {
   const [isRevealPassword, setIsRevealPassword] = useState(false);
+  const navigate = useNavigate();
 
   const { authenticate } = authStore();
 
   const { signin, isLoadingSignin } = useSigninMutation({
     onSuccess: (data) => {
       authenticate(data.token.token, data.user);
+      navigate("/");
     },
     onError: () => {
       toast.error("Erro ao logar, verifique suas credenciais.");
@@ -42,7 +45,18 @@ function SignInForm() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    signin(values);
+    // signin(values); desabilitado para testes
+
+    authenticate("123", {
+      id: "123",
+      name: "John Doe",
+      email: "john.doe@example.com",
+      password: "123",
+    });
+
+    toast.success("Login realizado com sucesso!");
+
+    navigate("/");
   }
 
   return (
