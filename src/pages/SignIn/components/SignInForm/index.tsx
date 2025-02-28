@@ -114,6 +114,11 @@ function SignInForm() {
           </Button>
         </form>
       </Form>
+      <div className="flex items-center justify-center">
+        <p className="text-sm text-gray-500">
+          Não tem uma conta? <span className="text-primary underline cursor-pointer hover:text-primary/80">Criar conta</span>
+        </p>
+      </div>
     </div>
   );
 }
