@@ -1,24 +1,28 @@
-import { BsLayoutTextSidebarReverse, BsViewList } from "react-icons/bs";
-import { HiOutlineHome } from "react-icons/hi";
 import { Route } from "../models/route.model";
+import { GoHome } from "react-icons/go";
+import { CgNotes } from "react-icons/cg";
+import { BsPhone } from "react-icons/bs";
+import { LuUsers } from "react-icons/lu";
 
 export const routes: Route[] = [
   {
     label: "Início",
     pathname: "/",
-    Icon: HiOutlineHome,
-    description: "Página inicial",
+    Icon: GoHome,
   },
   {
-    label: "Agentes",
-    pathname: "agents",
-    Icon: BsLayoutTextSidebarReverse,
-    description: "Agentes de IA",
+    label: "Propostas",
+    pathname: "proposals",
+    Icon: CgNotes,
   },
   {
-    label: "Simulações",
-    pathname: "simulations",
-    Icon: BsViewList,
-    description: "Simulações de IA",
+    label: "Clientes",
+    pathname: "clients",
+    Icon: LuUsers,
+  },
+  {
+    label: "Pre-atendimento",
+    pathname: "pre-attendance",
+    Icon: BsPhone,
   },
 ];

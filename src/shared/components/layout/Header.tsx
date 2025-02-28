@@ -21,7 +21,7 @@ export function Header() {
   return (
     <header className="flex items-center h-[7vh] relative">
       <div className="w-[15%] h-full shadow-[0_4px_6px_rgba(0,0,0,0.1)] flex items-center justify-center">
-        <h1 className="text-[22px] font-bold text-[var(--primary)]">Aurora</h1>
+        <h1 className="text-[22px] font-bold text-[var(--primary)]">ViagemGO</h1>
       </div>
 
       <div className="flex items-center justify-between w-[85%] px-4 relative">
