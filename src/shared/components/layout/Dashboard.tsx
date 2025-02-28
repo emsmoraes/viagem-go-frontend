@@ -10,7 +10,7 @@ export function Dashboard() {
       <div className="flex flex-1 h-full min-h-0">
         <Sidebar />
 
-        <div className="flex flex-col flex-1 gap-4 p-4 bg-[#F7F7F7] overflow-y-auto h-full">
+        <div className="flex flex-col flex-1 gap-4 p-8 bg-[#F7F7F7] overflow-y-auto h-full">
           <Outlet />
         </div>
       </div>

@@ -9,7 +9,7 @@ export function Home() {
   ];
 
   return (
-    <div className="flex flex-col flex-1 gap-4 p-4 bg-[#F7F7F7] overflow-y-auto h-full">
+    <div className="flex flex-col flex-1 gap-4 bg-[#F7F7F7] overflow-y-auto h-full">
       <h1 className="text-3xl font-semibold text-black">Home</h1>
 
       <div className="flex flex-col gap-4">
