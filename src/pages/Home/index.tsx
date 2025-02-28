@@ -1,5 +1,4 @@
 import { MetricsCard } from "@/shared/components/ui/MetricsCard";
-import usePageTitle from "@/shared/hooks/usePageTitle";
 
 export function Home() {
   const metrics = [
@@ -9,11 +8,9 @@ export function Home() {
     { title: "Métrica 4", value: 240, description: "Aumento de 14% vs semana anterior" },
   ];
 
-  const pageTitle = usePageTitle();
-
   return (
     <div className="flex flex-col flex-1 gap-4 p-4 bg-[#F7F7F7] overflow-y-auto h-full">
-      <h1 className="text-3xl font-semibold text-black">{pageTitle}</h1>
+      <h1 className="text-3xl font-semibold text-black">Home</h1>
 
       <div className="flex flex-col gap-4">
         {metrics.map((metric, index) => (

@@ -5,9 +5,9 @@ const usePageTitle = () => {
   const location = useLocation().pathname;
   const currentPath = location === "/" ? "/" : location.split("/")[1];
 
-  const currentRoute = routes.find((route) => route.pathname === currentPath);
+  const currentRoute = routes.find((route) => route.pathname === currentPath)!;
 
-  return currentRoute?.label || "";
+  return currentRoute;
 };
 
 export default usePageTitle;
