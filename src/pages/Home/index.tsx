@@ -1,10 +1,18 @@
-import { Button } from "@/shared/components/ui/button";
+import { Header } from "@/shared/components/layout/Header";
+import { Sidebar } from "@/shared/components/layout/Sidebar";
 
 export function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900">
-      <h1 className="text-3xl font-bold bg-mint-500">Bem-vindo ao Aurora!</h1>
-      <Button className="mt-2">Clique aqui</Button>
+    <div className="flex flex-col h-screen">
+      <Header />
+
+      <div className="flex flex-1 h-full min-h-0">
+        <Sidebar />
+
+        <div className="flex flex-col flex-1 gap-4 p-4 bg-[#F7F7F7] overflow-y-auto h-full">
+          <h1 className="my-2 text-[24px] font-bold text-[#1D1D1D]">Dashboard</h1>
+        </div>
+      </div>
     </div>
   );
 }
