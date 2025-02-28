@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import { CgSpinnerTwo } from "react-icons/cg";
+import { CgSpinner, CgSpinnerTwo } from "react-icons/cg";
 
 import { Private } from "./private";
 import { Public } from "./public";
@@ -14,6 +14,12 @@ import Dashboard from "../components/layout/Dashboard";
 const HomeRouter = lazy(() =>
   import("@/pages/Home").then((module) => ({
     default: module.Home,
+  })),
+);
+
+const AgentsRouter = lazy(() =>
+  import("@/pages/Agents").then((module) => ({
+    default: module.Agents,
   })),
 );
 
@@ -53,7 +59,7 @@ export function Router(): ReactElement {
     <Suspense
       fallback={
         <div className="flex h-[100vh] w-full items-center justify-center bg-gray-900/10">
-          <CgSpinnerTwo className="animate-spin text-6xl" />
+          <CgSpinner className="animate-spin text-6xl" />
         </div>
       }
     >
@@ -69,7 +75,7 @@ export function Router(): ReactElement {
         <Route element={<Private />}>
           <Route element={<Dashboard />}>
             <Route path="/" element={<HomeRouter />} />
-            <Route path="agents" element={<HomeRouter />} />
+            <Route path="agents" element={<AgentsRouter />} />
             <Route path="simulations" element={<HomeRouter />} />
           </Route>
         </Route>
