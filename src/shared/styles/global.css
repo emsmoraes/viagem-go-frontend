@@ -23,7 +23,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
 
-  --primary: oklch(0.6 0.18 245);
+  --primary: oklch(0.60 0.18 245);
   --primary-foreground: oklch(0.98 0 0);
 
   --accent: oklch(0.6 0.18 245);
@@ -156,5 +156,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  button {
+    @apply cursor-pointer;
   }
 }
