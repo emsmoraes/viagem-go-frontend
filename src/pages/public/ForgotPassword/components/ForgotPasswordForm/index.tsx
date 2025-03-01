@@ -9,6 +9,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { CgSpinner } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useForgotPasswordMutation } from "../../hooks/useForgotPassword";
 
 const recoverPasswordSchema = z.object({
   email: z.string().email({ message: "E-mail inválido." }),
@@ -26,8 +27,17 @@ function ForgotPasswordForm() {
     },
   });
 
+  const { forgotPassword, isLoadingForgotPassword } = useForgotPasswordMutation({
+    onSuccess: () => {
+      toast.success("E-mail de recuperação enviado com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Erro ao tentar recuperar senha.");
+    },
+  });
+
   function onSubmit(values: z.infer<typeof recoverPasswordSchema>) {
-    console.log(values);
+    forgotPassword(values.email, redirectUrl);
   }
 
   return (
@@ -53,8 +63,12 @@ function ForgotPasswordForm() {
             )}
           />
 
-          <Button type="submit" className="w-full py-5 mt-5 [&_svg:not([class*='size-'])]:size-6" disabled={false}>
-            {false ? <CgSpinner className="animate-spin" /> : "Recuperar senha"}
+          <Button
+            type="submit"
+            className="w-full py-5 mt-5 [&_svg:not([class*='size-'])]:size-6"
+            disabled={isLoadingForgotPassword}
+          >
+            {isLoadingForgotPassword ? <CgSpinner className="animate-spin" /> : "Recuperar senha"}
           </Button>
         </form>
       </Form>
