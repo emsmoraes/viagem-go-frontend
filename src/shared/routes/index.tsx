@@ -11,6 +11,7 @@ import { SignIn } from "@/pages/public/SignIn";
 import api from "@/shared/services/axios/api";
 import Dashboard from "../components/layout/Dashboard";
 import SignUp from "@/pages/public/SignUp";
+import ActivateUser from "@/pages/public/ActivateUser";
 
 const HomeRouter = lazy(() =>
   import("@/pages/private/Home").then((module) => ({
@@ -42,7 +43,12 @@ export function Router(): ReactElement {
   const location = useLocation();
 
   useEffect(() => {
-    if (!logged && location.pathname !== "/sign-up" && location.pathname !== "/sign-in") {
+    if (
+      !logged &&
+      location.pathname !== "/sign-up" &&
+      location.pathname !== "/sign-in" &&
+      !location.pathname.startsWith("/activate-user")
+    ) {
       navigate("/sign-in", { replace: true });
     }
   }, [logged, navigate, location.pathname]);
@@ -83,6 +89,7 @@ export function Router(): ReactElement {
             <Route index element={<Navigate to="/sign-in" />} />
             <Route path="sign-in" element={<SignIn />} />
             <Route path="sign-up" element={<SignUp />} />
+            <Route path="activate-user/:key" element={<ActivateUser />} />
           </Route>
         )}
 

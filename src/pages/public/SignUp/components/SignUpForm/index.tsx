@@ -16,7 +16,7 @@ const signUpSchema = z.object({
 });
 
 function SignUpForm() { 
-  const redirectUrl = `${window.location.origin}/activate-account`;
+  const redirectUrl = `${window.location.origin}/activate-user`;
 
   const { signup, isLoadingSignup } = useSignupMutation({
     onSuccess: () => {
