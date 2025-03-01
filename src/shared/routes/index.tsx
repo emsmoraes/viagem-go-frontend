@@ -13,6 +13,7 @@ import Dashboard from "../components/layout/Dashboard";
 import SignUp from "@/pages/public/SignUp";
 import ActivateUser from "@/pages/public/ActivateUser";
 import ForgotPassword from "@/pages/public/ForgotPassword";
+import UpdatePassword from "@/pages/public/UpdatePassword";
 
 const HomeRouter = lazy(() =>
   import("@/pages/private/Home").then((module) => ({
@@ -45,8 +46,9 @@ export function Router(): ReactElement {
 
   useEffect(() => {
     const isPublicRoute =
-      ["/sign-up", "/sign-in", "/forgot-password"].includes(location.pathname) ||
-      location.pathname.startsWith("/activate-user");
+      ["/sign-up", "/sign-in", "/forgot-password", "/update-password"].includes(location.pathname) ||
+      location.pathname.startsWith("/activate-user") ||
+      location.pathname.startsWith("/update-password");
 
     if (!logged && !isPublicRoute) {
       navigate("/sign-in", { replace: true });
@@ -91,6 +93,7 @@ export function Router(): ReactElement {
             <Route path="sign-up" element={<SignUp />} />
             <Route path="activate-user/:key" element={<ActivateUser />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="update-password/:key" element={<UpdatePassword />} />
           </Route>
         )}
 

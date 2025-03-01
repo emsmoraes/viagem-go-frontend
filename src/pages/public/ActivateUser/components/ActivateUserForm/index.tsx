@@ -25,20 +25,20 @@ const activationSchema = z
 
 interface ActivateUserFormProps {
   email: string;
-  userKey: string;
+  validKey: string;
 }
 
-function ActivateUserForm({ email, userKey }: ActivateUserFormProps) {
+function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
   const [isRevealPassword, setIsRevealPassword] = useState(false);
   const navigate = useNavigate();
 
   const { activeUser, isLoadingActiveUser } = useActiveUserMutation({
     onSuccess: () => {
-      toast.success("Usuário criado com sucesso!");
+      toast.success("Usuário ativado com sucesso!");
       navigate("/sign-in");
     },
     onError: (error) => {
-      toast.error("Erro ao criar usuário");
+      toast.error("Erro ao ativar usuário");
     },
   });
 
@@ -54,7 +54,7 @@ function ActivateUserForm({ email, userKey }: ActivateUserFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof activationSchema>) {
-    if (email) activeUser(userKey, values);
+    if (email) activeUser(validKey, values);
   }
 
   return (

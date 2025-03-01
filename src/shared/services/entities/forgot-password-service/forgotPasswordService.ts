@@ -9,6 +9,15 @@ const forgotPassword = async (email: string, redirectUrl: string): Promise<void>
   }
 };
 
+const updatePassword = async (key: string, password: string, passwordConfirm: string): Promise<void> => {
+  try {
+    await api.patch(`forgot-password/${key}`, { password, passwordConfirm });
+  } catch (error) {
+    throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
+  }
+};
+
 export const ForgotPasswordService = {
   forgotPassword,
+  updatePassword,
 };

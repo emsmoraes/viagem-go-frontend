@@ -1,16 +1,15 @@
-import loginBg from "@/shared/assets/images/login-bg.jpg";
-import { useGetUserKeyInfoMutation } from "./hooks/useActiveUser";
-import { useEffect } from "react";
-import ActivateUserForm from "./components/ActivateUserForm";
-import { CgSpinner } from "react-icons/cg";
+import bgWallpaper from "@/shared/assets/images/login-bg.jpg";
+import UpdatePasswordForm from "./components/UpdatePasswordForm";
 import { toast } from "sonner";
+import { useGetUserKeyInfoMutation } from "@/pages/public/ActivateUser/hooks/useActiveUser";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function ActivateUser() {
+function UpdatePassword() {
   const { key } = useParams();
   const navigate = useNavigate();
 
-  const { isLoadingGetUserKeyInfo, getUserKeyInfo, userKeyResponse } = useGetUserKeyInfoMutation({
+  const { getUserKeyInfo, userKeyResponse } = useGetUserKeyInfoMutation({
     onSuccess: () => {},
     onError: () => {
       toast.error("Chave inválida");
@@ -27,7 +26,7 @@ function ActivateUser() {
       <div
         className="flex flex-col items-center justify-center rounded-t-3xl"
         style={{
-          backgroundImage: `url(${loginBg})`,
+          backgroundImage: `url(${bgWallpaper})`,
           width: "100%",
           height: "100%",
           maxHeight: "100%",
@@ -38,17 +37,11 @@ function ActivateUser() {
         }}
       >
         <div className="w-[90%] sm:w-[500px]">
-          {isLoadingGetUserKeyInfo ? (
-            <div className="w-full space-y-6 bg-white rounded-3xl shadow-xl px-7 py-10 h-[500px] flex items-center justify-center">
-              <CgSpinner className="animate-spin" size={60} />
-            </div>
-          ) : (
-            <ActivateUserForm email={userKeyResponse?.user.email ?? ""} validKey={userKeyResponse?.key!!} />
-          )}
+          <UpdatePasswordForm validKey={userKeyResponse?.key!!} />
         </div>
       </div>
     </div>
   );
 }
 
-export default ActivateUser;
+export default UpdatePassword;

@@ -13,9 +13,8 @@ interface Props {
 }
 
 export function useForgotPasswordMutation({ onSuccess, onError }: Props): UseForgotPasswordMutationResult {
-  const { mutate, isPending } = useMutation<void, Error | AxiosError, { email: string }>({
-    mutationFn: ({ email }) => {
-      const redirectUrl = `${window.location.origin}/reset-password`;
+  const { mutate, isPending } = useMutation<void, Error | AxiosError, { email: string; redirectUrl: string }>({
+    mutationFn: ({ email, redirectUrl }) => {
       return ForgotPasswordService.forgotPassword(email, redirectUrl);
     },
     onSuccess,
@@ -24,6 +23,6 @@ export function useForgotPasswordMutation({ onSuccess, onError }: Props): UseFor
 
   return {
     isLoadingForgotPassword: isPending,
-    forgotPassword: (email: string) => mutate({ email }),
+    forgotPassword: (email: string, redirectUrl: string) => mutate({ email, redirectUrl }),
   };
 }

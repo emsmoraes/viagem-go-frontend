@@ -16,7 +16,7 @@ const recoverPasswordSchema = z.object({
 });
 
 function ForgotPasswordForm() {
-  const redirectUrl = `${window.location.origin}/reset-password`;
+  const redirectUrl = `${window.location.origin}/update-password`;
 
   const form = useForm({
     resolver: zodResolver(recoverPasswordSchema),
