@@ -1,18 +1,24 @@
 import SignInForm from "./components/SignInForm";
+import loginBg from "@/shared/assets/images/login-bg.jpg";
 
 export function SignIn() {
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100 gap-20">
-      <div className="max-w-[1000px]">
-        <div className="w-full mb-16">
-          <h2 className="text-3xl font-bold text-center mb-2">Bem vindo a ViagemGO</h2>
-          <p className="text-center text-gray-600">
-            Gerencie suas leads em múltiplos canais com agentes <br /> inteligentes
-          </p>
-        </div>
-        <SignInForm />
-        <div className="flex flex-col items-center justify-center gap-2 mt-10">
-          <small className="text-center text-gray-600">&copy; Todos os direitos reservados a ViagemGO</small>
+    <div className="flex flex-col h-screen items-center justify-center bg-gray-100 overflow-hidden pt-4">
+      <div
+        className="flex flex-col items-center justify-center rounded-t-3xl"
+        style={{
+          backgroundImage: `url(${loginBg})`,
+          width: "100%",
+          height: "100%",
+          maxHeight: "100%",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          maxWidth: "1525px",
+        }}
+      >
+        <div className="w-[90%] sm:w-[500px]">
+          <SignInForm />
         </div>
       </div>
     </div>
