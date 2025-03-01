@@ -1,36 +1,37 @@
 import type { ReactElement } from "react";
 import { lazy, Suspense, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { CgSpinner } from "react-icons/cg";
 
 import { Private } from "./private";
 import { Public } from "./public";
 import { AxiosError, AxiosResponse, isAxiosError } from "axios";
 import { authStore } from "../store/auth.store";
-import { SignIn } from "@/pages/SignIn";
+import { SignIn } from "@/pages/public/SignIn";
 import api from "@/shared/services/axios/api";
 import Dashboard from "../components/layout/Dashboard";
+import SignUp from "@/pages/public/SignUp";
 
 const HomeRouter = lazy(() =>
-  import("@/pages/Home").then((module) => ({
+  import("@/pages/private/Home").then((module) => ({
     default: module.Home,
   })),
 );
 
 const ProposalsRouter = lazy(() =>
-  import("@/pages/Proposals").then((module) => ({
+  import("@/pages/private/Proposals").then((module) => ({
     default: module.Proposals,
   })),
 );
 
 const ClientsRouter = lazy(() =>
-  import("@/pages/Clients").then((module) => ({
+  import("@/pages/private/Clients").then((module) => ({
     default: module.Clients,
   })),
 );
 
 const PreAttendancesRouter = lazy(() =>
-  import("@/pages/PreAttendances").then((module) => ({
+  import("@/pages/private/PreAttendances").then((module) => ({
     default: module.PreAttendances,
   })),
 );
@@ -38,12 +39,13 @@ const PreAttendancesRouter = lazy(() =>
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!logged) {
+    if (!logged && location.pathname !== "/sign-up" && location.pathname !== "/sign-in") {
       navigate("/sign-in", { replace: true });
     }
-  }, [logged, navigate]);
+  }, [logged, navigate, location.pathname]);
 
   useEffect(() => {
     const interceptorId = api.interceptors.response.use(
@@ -80,6 +82,7 @@ export function Router(): ReactElement {
           <Route element={<Public />}>
             <Route index element={<Navigate to="/sign-in" />} />
             <Route path="sign-in" element={<SignIn />} />
+            <Route path="sign-up" element={<SignUp />} />
           </Route>
         )}
 

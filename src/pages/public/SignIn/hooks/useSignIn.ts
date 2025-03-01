@@ -2,8 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
 import type { AuthRequest, AuthResponse } from "@/shared/models";
-import { AuthService } from "@/shared/services/entities/auth-service/AuthService";
-
+import { AuthService } from "@/shared/services/entities";
 interface UseSigninMutationResult {
   isLoadingSignin: boolean;
   signin: (data: AuthRequest) => void;
