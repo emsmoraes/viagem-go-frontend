@@ -26,7 +26,7 @@ function SignInForm() {
 
   const { signin, isLoadingSignin } = useSigninMutation({
     onSuccess: (data) => {
-      authenticate(data.token.token, data.user);
+      authenticate(data.access_token, data.user);
       navigate("/");
     },
     onError: () => {
@@ -45,18 +45,7 @@ function SignInForm() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    // signin(values); desabilitado para testes
-
-    authenticate("123", {
-      id: "123",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      password: "123",
-    });
-
-    toast.success("Login realizado com sucesso!");
-
-    navigate("/");
+    signin(values);
   }
 
   return (
