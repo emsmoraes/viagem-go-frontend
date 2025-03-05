@@ -9,11 +9,11 @@ import { AxiosError, AxiosResponse, isAxiosError } from "axios";
 import { authStore } from "../store/auth.store";
 import { SignIn } from "@/pages/public/SignIn";
 import api from "@/shared/services/axios/api";
-import Dashboard from "../components/layout/Dashboard";
 import SignUp from "@/pages/public/SignUp";
 import ActivateUser from "@/pages/public/ActivateUser";
 import ForgotPassword from "@/pages/public/ForgotPassword";
 import UpdatePassword from "@/pages/public/UpdatePassword";
+import { Dashboard } from "../components/layout/dashboard";
 
 const HomeRouter = lazy(() =>
   import("@/pages/private/Home").then((module) => ({
