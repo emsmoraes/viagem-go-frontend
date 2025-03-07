@@ -17,7 +17,7 @@ const DrawerMenu = () => {
         </SheetTrigger>
 
         <SheetContent className="flex flex-col bg-white p-0 text-black">
-          <SheetHeader className="flex-2 mb-6 border-b border-solid border-secondary p-5 text-left">
+          <SheetHeader className="border-secondary border-b border-solid p-5 text-left">
             <SheetTitle className="text-black">Menu</SheetTitle>
           </SheetHeader>
 

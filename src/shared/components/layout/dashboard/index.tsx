@@ -3,10 +3,10 @@ import AppBar from "../../app-bar";
 
 export const Dashboard = () => {
   return (
-    <div className="block lg:flex lg:h-screen py-3">
+    <div className="flex h-screen flex-col py-0 lg:flex-row lg:py-3">
       <AppBar />
-      <div className="pr-3 w-full">
-        <div className="w-full lg:h-full bg-[#F9F9F9] rounded-3xl p-6">
+      <div className="h-full w-full pr-3 pl-3 lg:pl-0">
+        <div className="h-full w-full rounded-3xl bg-transparent p-0 pt-6 lg:mt-0 lg:bg-[#F9F9F9] lg:p-6">
           <Outlet />
         </div>
       </div>
