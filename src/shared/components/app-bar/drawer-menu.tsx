@@ -10,11 +10,16 @@ const DrawerMenu = () => {
   return (
     <div className="flex w-full items-center justify-end border-b border-solid border-[#1C1C1C1A] bg-white py-2 pr-2 lg:hidden">
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="secondary" size={"icon"}>
-            <MenuIcon size={18} />
-          </Button>
-        </SheetTrigger>
+        <div className="flex items-center justify-between w-full px-2">
+          <h1 className="text-center text-4xl font-medium">
+            VIAGEM<span className="text-primary">GO</span>
+          </h1>
+          <SheetTrigger asChild>
+            <Button variant="secondary" size={"icon"}>
+              <MenuIcon size={18} />
+            </Button>
+          </SheetTrigger>
+        </div>
 
         <SheetContent className="flex flex-col bg-white p-0 text-black">
           <SheetHeader className="border-secondary border-b border-solid p-5 text-left">

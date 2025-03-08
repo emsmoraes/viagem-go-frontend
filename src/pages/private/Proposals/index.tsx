@@ -1,11 +1,14 @@
-import usePageTitle from "@/shared/hooks/usePageTitle";
+import SearchProposals from "./components/SearchProposals";
+import { useLocation } from "react-router-dom";
 
 export function Proposals() {
-  const currentRoute = usePageTitle();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchValue = searchParams.get("search") || "";
 
   return (
-    <div>
-      <h1 className="text-3xl font-semibold text-black">{currentRoute.label}</h1>
-    </div>
+    <>
+      <SearchProposals defaultValues={{ search: searchValue }} />
+    </>
   );
 }
