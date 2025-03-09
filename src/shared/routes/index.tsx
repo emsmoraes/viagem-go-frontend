@@ -81,7 +81,7 @@ export function Router(): ReactElement {
     <Suspense
       fallback={
         <div className="flex h-[100vh] w-full items-center justify-center bg-gray-900/10">
-          <CgSpinner className="animate-spin text-6xl" />
+          <CgSpinner className="text-primary animate-spin text-6xl" />
         </div>
       }
     >

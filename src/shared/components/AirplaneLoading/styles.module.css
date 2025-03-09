@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #87ceeb, #ffffff);
+}
+
+.cloud {
+  position: absolute;
+  right: -10%;
+  color: #ffffff;
+  opacity: 0.8;
+  font-size: 3rem;
+  animation-name: moveCloud;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes moveCloud {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-120vw);
+  }
+}
+
+.planeContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.plane {
+  font-size: 4rem;
+  fill: url(#planeGradient);
+}
