@@ -5,6 +5,9 @@ import type { AxiosError } from "axios";
 
 interface UseProposalsQueryResult {
   proposals: Proposal[];
+  total: number;
+  currentPage: number;
+  totalPages: number;
   isLoadingProposals: boolean;
   isErrorProposals: boolean;
   errorProposals: AxiosError | Error | null;
@@ -12,16 +15,20 @@ interface UseProposalsQueryResult {
 
 interface UseProposalsQueryProps {
   search: string;
+  page: number;
 }
 
-export function useProposalsQuery({ search }: UseProposalsQueryProps): UseProposalsQueryResult {
-  const { data, isLoading, isError, error } = useQuery<Proposal[], AxiosError>({
-    queryKey: ["proposals", search],
-    queryFn: () => ProposalService.getProposals(search),
+export function useProposalsQuery({ search, page }: UseProposalsQueryProps): UseProposalsQueryResult {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["proposals", search, page],
+    queryFn: () => ProposalService.getProposals(search, page),
   });
 
   return {
-    proposals: data ?? [],
+    proposals: data?.proposals ?? [],
+    total: data?.total ?? 0,
+    currentPage: data?.currentPage ?? 1,
+    totalPages: data?.totalPages ?? 1,
     isLoadingProposals: isLoading,
     isErrorProposals: isError,
     errorProposals: error,
