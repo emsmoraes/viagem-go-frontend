@@ -1,13 +1,13 @@
 import SearchProposals from "./components/SearchProposals";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useProposalsQuery } from "./hooks/useProposal";
 import { ProposalItem } from "./components/ProposalItem";
 import usePageTitle from "@/shared/hooks/usePageTitle";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import Skeletons from "@/shared/components/Skeletons";
-import AirplaneLoading from "@/shared/components/AirplaneLoading";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/shared/components/ui/pagination";
 
 export function Proposals() {
+  const navigate = useNavigate();
   const { label } = usePageTitle();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -18,6 +18,11 @@ export function Proposals() {
     search: searchValue,
     page: pageValue,
   });
+
+  const handlePageChange = (newPage: number) => {
+    searchParams.set("page", newPage.toString());
+    navigate(`?${searchParams.toString()}`);
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -36,14 +41,30 @@ export function Proposals() {
       )}
 
       {isErrorProposals && <p>Erro ao carregar: {errorProposals?.message}</p>}
+      <div className="flex-1 overflow-y-auto pb-6">
+        {proposals?.length > 0 && (
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {proposals.map((proposal) => (
+              <ProposalItem key={proposal.id} proposal={proposal} />
+            ))}
+          </div>
+        )}
+      </div>
 
-      {proposals?.length > 0 && (
-        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {proposals.map((proposal) => (
-            <ProposalItem key={proposal.id} proposal={proposal} />
-          ))}
-        </div>
-      )}
+      <Pagination className="mt-4">
+        <PaginationContent>
+          {Array.from({ length: totalPages }).map((_, index) => {
+            const pageNumber = index + 1;
+            return (
+              <PaginationItem key={pageNumber}>
+                <PaginationLink isActive={pageNumber === pageValue} onClick={() => handlePageChange(pageNumber)}>
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

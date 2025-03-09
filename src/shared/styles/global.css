@@ -162,6 +162,10 @@
   button {
     @apply cursor-pointer;
   }
+
+  a {
+    @apply cursor-pointer;
+  }
 }
 
 *::-webkit-scrollbar {
