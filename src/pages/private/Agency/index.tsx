@@ -1,6 +1,6 @@
 import usePageTitle from "@/shared/hooks/usePageTitle";
 
-export function PreAttendances() {
+export function Agency() {
   const currentRoute = usePageTitle();
 
   return (

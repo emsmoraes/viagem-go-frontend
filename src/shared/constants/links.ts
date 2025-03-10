@@ -3,6 +3,7 @@ import { GoHome } from "react-icons/go";
 import { CgNotes } from "react-icons/cg";
 import { BsPhone } from "react-icons/bs";
 import { LuUsers } from "react-icons/lu";
+import { HiOutlineOfficeBuilding } from "react-icons/hi";
 
 export const routes: Route[] = [
   {
@@ -21,8 +22,8 @@ export const routes: Route[] = [
     Icon: LuUsers,
   },
   {
-    label: "Pre-atendimento",
-    pathname: "pre-attendance",
-    Icon: BsPhone,
+    label: "Agência",
+    pathname: "agency",
+    Icon: HiOutlineOfficeBuilding,
   },
 ];

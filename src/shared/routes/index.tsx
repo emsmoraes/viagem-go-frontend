@@ -33,9 +33,9 @@ const ClientsRouter = lazy(() =>
   })),
 );
 
-const PreAttendancesRouter = lazy(() =>
-  import("@/pages/private/PreAttendances").then((module) => ({
-    default: module.PreAttendances,
+const AgencyRouter = lazy(() =>
+  import("@/pages/private/Agency").then((module) => ({
+    default: module.Agency,
   })),
 );
 
@@ -103,7 +103,7 @@ export function Router(): ReactElement {
               <Route path="/" element={<HomeRouter />} />
               <Route path="proposals" element={<ProposalsRouter />} />
               <Route path="clients" element={<ClientsRouter />} />
-              <Route path="pre-attendance" element={<PreAttendancesRouter />} />
+              <Route path="agency" element={<AgencyRouter />} />
             </Route>
           </Route>
         )}
