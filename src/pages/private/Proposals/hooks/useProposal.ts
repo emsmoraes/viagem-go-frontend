@@ -23,6 +23,11 @@ interface CreateProposalMutationProps {
   onError?: (error: AxiosError | Error) => void;
 }
 
+interface DeleteProposalMutationProps {
+  onSuccess?: () => void;
+  onError?: (error: AxiosError | Error) => void;
+}
+
 export function useProposalsQuery({ search, page }: UseProposalsQueryProps): UseProposalsQueryResult {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["proposals", search, page],
@@ -45,6 +50,19 @@ export function useCreateProposalMutation({ onSuccess, onError }: CreateProposal
 
   return useMutation<CreateProposalResponse, AxiosError, string>({
     mutationFn: async (title) => ProposalService.createProposal({ title }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["proposals"] });
+      onSuccess?.();
+    },
+    onError,
+  });
+}
+
+export function useDeleteProposalMutation({ onSuccess, onError }: DeleteProposalMutationProps) {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, AxiosError, string>({
+    mutationFn: async (proposalId) => ProposalService.deleteProposalById(proposalId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["proposals"] });
       onSuccess?.();

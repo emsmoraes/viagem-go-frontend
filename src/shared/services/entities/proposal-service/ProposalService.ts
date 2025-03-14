@@ -36,7 +36,16 @@ const createProposal = async (proposal: CreateProposalRequest): Promise<CreatePr
   }
 };
 
+const deleteProposalById = async (proposalId: string): Promise<void> => {
+  try {
+    await api.delete(`proposal/${proposalId}`);
+  } catch (error) {
+    throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
+  }
+};
+
 export const ProposalService = {
   getProposals,
   createProposal,
+  deleteProposalById,
 };
