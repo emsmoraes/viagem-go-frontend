@@ -6,6 +6,7 @@ import usePageTitle from "@/shared/hooks/usePageTitle";
 import Skeletons from "@/shared/components/Skeletons";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/shared/components/ui/pagination";
 import clsx from "clsx";
+import CreateProposal from "./components/CreateProposal";
 
 export function Proposals() {
   const navigate = useNavigate();
@@ -27,7 +28,10 @@ export function Proposals() {
 
   return (
     <div className="flex h-full flex-col">
-      <SearchProposals defaultValues={{ search: searchValue }} />
+      <div className="flex items-center justify-between">
+        <SearchProposals defaultValues={{ search: searchValue }} />
+        <CreateProposal />
+      </div>
 
       <div className={clsx("mt-4 flex-1 overflow-y-auto pb-6", totalPages > 1 && "lg:mr-4 lg:pr-4")}>
         <h1 className="mb-4 pt-3 text-xl font-medium">{label}</h1>

@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Proposal } from "@/shared/models/proposal.model";
-import { ProposalService } from "@/shared/services/entities/proposal-service/ProposalService";
+import { CreateProposalResponse, ProposalService } from "@/shared/services/entities/proposal-service/ProposalService";
 import type { AxiosError } from "axios";
 
 interface UseProposalsQueryResult {
@@ -18,6 +18,11 @@ interface UseProposalsQueryProps {
   page: number;
 }
 
+interface CreateProposalMutationProps {
+  onSuccess?: () => void;
+  onError?: (error: AxiosError | Error) => void;
+}
+
 export function useProposalsQuery({ search, page }: UseProposalsQueryProps): UseProposalsQueryResult {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["proposals", search, page],
@@ -33,4 +38,17 @@ export function useProposalsQuery({ search, page }: UseProposalsQueryProps): Use
     isErrorProposals: isError,
     errorProposals: error,
   };
+}
+
+export function useCreateProposalMutation({ onSuccess, onError }: CreateProposalMutationProps) {
+  const queryClient = useQueryClient();
+
+  return useMutation<CreateProposalResponse, AxiosError, string>({
+    mutationFn: async (title) => ProposalService.createProposal({ title }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["proposals"] });
+      onSuccess?.();
+    },
+    onError,
+  });
 }

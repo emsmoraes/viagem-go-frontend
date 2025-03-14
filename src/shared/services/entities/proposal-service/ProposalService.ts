@@ -9,6 +9,12 @@ interface GetProposalsResponse {
   totalPages: number;
 }
 
+interface CreateProposalRequest {
+  title: string;
+}
+
+export interface CreateProposalResponse extends Proposal {}
+
 const getProposals = async (search: string, page: number = 1): Promise<GetProposalsResponse> => {
   try {
     const { data } = await api.get<GetProposalsResponse>("proposal", {
@@ -21,6 +27,16 @@ const getProposals = async (search: string, page: number = 1): Promise<GetPropos
   }
 };
 
+const createProposal = async (proposal: CreateProposalRequest): Promise<CreateProposalResponse> => {
+  try {
+    const { data } = await api.post<CreateProposalResponse>("proposal", proposal);
+    return data;
+  } catch (error) {
+    throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
+  }
+};
+
 export const ProposalService = {
   getProposals,
+  createProposal,
 };
