@@ -28,7 +28,7 @@ export function Proposals() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between lg:pr-6">
         <SearchProposals defaultValues={{ search: searchValue }} />
         <CreateProposal />
       </div>

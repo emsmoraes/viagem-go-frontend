@@ -58,8 +58,8 @@ function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
   }
 
   return (
-    <div className="w-full space-y-6 bg-white rounded-3xl shadow-xl px-7 py-10">
-      <h1 className="text-4xl font-medium text-center">
+    <div className="w-full space-y-6 rounded-3xl bg-white px-7 py-10 shadow-xl">
+      <h1 className="text-center text-4xl font-medium">
         VIAGEM<span className="text-primary">GO</span>
       </h1>
       <Form {...form}>
@@ -69,7 +69,7 @@ function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
               <MdOutlineMail className="text-primary" size={20} /> E-mail
             </FormLabel>
             <FormControl>
-              <Input value={email} disabled className="py-5 bg-gray-100 text-gray-500" />
+              <Input value={email} disabled className="bg-gray-100 py-5 text-gray-500" />
             </FormControl>
           </FormItem>
 
@@ -111,7 +111,7 @@ function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
                       size="icon"
                       variant="ghost"
                       onClick={() => setIsRevealPassword(!isRevealPassword)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-transparent hover:text-primary [&_svg:not([class*='size-'])]:size-5"
+                      className="hover:text-primary absolute top-1/2 right-2 -translate-y-1/2 hover:bg-transparent [&_svg:not([class*='size-'])]:size-5"
                     >
                       {isRevealPassword ? <MdOutlineVisibility /> : <MdOutlineVisibilityOff />}
                     </Button>
@@ -144,7 +144,7 @@ function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
                       size="icon"
                       variant="ghost"
                       onClick={() => setIsRevealPassword(!isRevealPassword)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-transparent hover:text-primary [&_svg:not([class*='size-'])]:size-5"
+                      className="hover:text-primary absolute top-1/2 right-2 -translate-y-1/2 hover:bg-transparent [&_svg:not([class*='size-'])]:size-5"
                     >
                       {isRevealPassword ? <MdOutlineVisibility /> : <MdOutlineVisibilityOff />}
                     </Button>
@@ -155,7 +155,7 @@ function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
             )}
           />
 
-          <Button disabled={!email} type="submit" className="w-full py-5 mt-5 [&_svg:not([class*='size-'])]:size-6">
+          <Button disabled={!email} type="submit" className="mt-5 w-full py-5 [&_svg:not([class*='size-'])]:size-6">
             {isLoadingActiveUser ? <CgSpinner className="animate-spin" /> : "Ativar Conta"}
           </Button>
         </form>
@@ -163,7 +163,7 @@ function ActivateUserForm({ email, validKey }: ActivateUserFormProps) {
       <div className="flex items-center justify-center">
         <p className="text-sm text-gray-500">
           Já tem uma conta?{" "}
-          <Link to="/sign-in" className="text-primary underline cursor-pointer hover:text-primary/80">
+          <Link to="/sign-in" className="text-primary hover:text-primary/80 cursor-pointer underline">
             Entrar
           </Link>
         </p>

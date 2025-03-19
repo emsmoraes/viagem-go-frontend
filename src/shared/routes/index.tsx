@@ -39,6 +39,12 @@ const AgencyRouter = lazy(() =>
   })),
 );
 
+const UserProfileRouter = lazy(() =>
+  import("@/pages/private/UserProfile").then((module) => ({
+    default: module.UserProfile,
+  })),
+);
+
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
@@ -104,6 +110,7 @@ export function Router(): ReactElement {
               <Route path="proposals" element={<ProposalsRouter />} />
               <Route path="clients" element={<ClientsRouter />} />
               <Route path="agency" element={<AgencyRouter />} />
+              <Route path="profile" element={<UserProfileRouter />} />
             </Route>
           </Route>
         )}

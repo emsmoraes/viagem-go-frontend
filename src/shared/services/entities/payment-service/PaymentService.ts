@@ -5,6 +5,7 @@ export type CreateCheckoutRequest = {
   priceId: string;
   successUrl: string;
   cancelUrl: string;
+  planType: "INDIVIDUAL" | "AGENCY";
 };
 
 export type CheckoutResponse = {
