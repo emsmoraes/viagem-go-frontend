@@ -1,6 +1,7 @@
 import { UpdateUserProfileRequest, UserProfileService } from "@/shared/services/entities";
 import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { UpdateUserProfileResponse } from "@/shared/services/entities";
 
 interface UseUpdateUserProfileMutationResult {
   isLoadingUpdate: boolean;
@@ -8,13 +9,13 @@ interface UseUpdateUserProfileMutationResult {
 }
 
 interface Props {
-  onSuccess: () => void;
+  onSuccess: (data: UpdateUserProfileResponse) => void;
   onError: (error: Error | AxiosError) => void;
 }
 
 export function useUpdateUserProfileMutation({ onSuccess, onError }: Props): UseUpdateUserProfileMutationResult {
   const { mutate, isPending } = useMutation<
-    void,
+    UpdateUserProfileResponse,
     Error | AxiosError,
     { userId: string; data: UpdateUserProfileRequest }
   >({

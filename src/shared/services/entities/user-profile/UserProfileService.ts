@@ -5,11 +5,17 @@ import { User } from "@/shared/models";
 export type UpdateUserProfileRequest = Pick<
   User,
   "name" | "phone" | "proposalThankYouMessageSubtitle" | "proposalThankYouMessageTitle"
-> & {};
+>;
 
-const updateUserProfile = async (userId: string, data: UpdateUserProfileRequest): Promise<void> => {
+export type UpdateUserProfileResponse = User;
+
+const updateUserProfile = async (
+  userId: string,
+  data: UpdateUserProfileRequest,
+): Promise<UpdateUserProfileResponse> => {
   try {
-    await api.patch(`user-profile/${userId}`, data);
+    const response = await api.patch<UpdateUserProfileResponse>(`user-profile/${userId}`, data);
+    return response.data;
   } catch (error) {
     throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
   }

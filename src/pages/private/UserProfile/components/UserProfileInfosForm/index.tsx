@@ -7,6 +7,8 @@ import { Button } from "@/shared/components/ui/button";
 import { useUpdateUserProfileMutation } from "../../hooks/useUserProfile";
 import { toast } from "sonner";
 import { CgSpinner } from "react-icons/cg";
+import MaskedInput from "@/shared/components/Form/MaskedInput";
+import { authStore } from "@/shared/store/auth.store";
 
 const proposalSchema = z.object({
   email: z.string().min(1, { message: "O email é obrigatório." }).email(),
@@ -41,7 +43,11 @@ interface UserProfileInfosFormProps {
 
 function UserProfileInfosForm({ defaultValues, userId }: UserProfileInfosFormProps) {
   const { updateUserProfile, isLoadingUpdate } = useUpdateUserProfileMutation({
-    onSuccess: () => {
+    onSuccess: (updatedUser) => {
+      authStore.setState((state) => ({
+        ...state,
+        user: { ...state.user, ...updatedUser },
+      }));
       toast("Perfil atualizado com sucesso!");
     },
     onError: () => {
@@ -107,22 +113,12 @@ function UserProfileInfosForm({ defaultValues, userId }: UserProfileInfosFormPro
               )}
             />
 
-            <FormField
+            <MaskedInput
               control={form.control}
               name="phone"
-              render={({ field }) => (
-                <FormItem className="flex flex-col justify-start">
-                  <FormLabel>Telefone</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
-                      placeholder="Digite seu telefone"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Telefone"
+              mask="(00) 00000-0000"
+              className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
             />
 
             <FormField
