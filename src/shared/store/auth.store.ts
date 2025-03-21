@@ -11,6 +11,7 @@ interface StoreAuth {
   authenticate: (token: string, user: User) => void;
   load: () => { logged: boolean; user: User | undefined };
   logout: () => void;
+  setUser: (updatedUser: Partial<User>) => void;
 }
 
 export const authStore = create<StoreAuth>()(
@@ -41,6 +42,7 @@ export const authStore = create<StoreAuth>()(
 
         return { logged: true, user };
       },
+
       logout: (): void => {
         delete api.defaults.headers.common.Authorization;
         set((state) => ({
@@ -49,6 +51,12 @@ export const authStore = create<StoreAuth>()(
           user: undefined,
         }));
         sessionStorage.clear();
+      },
+
+      setUser: (updatedUser: Partial<User>) => {
+        set((state) => ({
+          user: state.user ? { ...state.user, ...updatedUser } : ({ ...updatedUser } as User),
+        }));
       },
     }),
     {

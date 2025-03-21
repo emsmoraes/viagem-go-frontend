@@ -72,7 +72,7 @@ function UserProfileInfosForm({ defaultValues, userId }: UserProfileInfosFormPro
   };
 
   return (
-    <div className="lg:pr-6">
+    <div className="flex-1 lg:pr-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">

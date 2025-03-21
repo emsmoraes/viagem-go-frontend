@@ -21,6 +21,37 @@ const updateUserProfile = async (
   }
 };
 
+export type UpdateUserAvatarResponse = {
+  avatarUrl: string;
+};
+
+const updateUserAvatar = async (avatar: File): Promise<UpdateUserAvatarResponse> => {
+  try {
+    const formData = new FormData();
+    formData.append("avatar", avatar);
+
+    const response = await api.patch<UpdateUserAvatarResponse>("user-avatar", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
+  }
+};
+
+const deleteUserAvatar = async (): Promise<void> => {
+  try {
+    await api.delete("user-avatar");
+  } catch (error) {
+    throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
+  }
+};
+
 export const UserProfileService = {
   updateUserProfile,
+  updateUserAvatar,
+  deleteUserAvatar,
 };
