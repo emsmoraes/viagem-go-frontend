@@ -162,6 +162,7 @@ function UserProfileInfosForm({ defaultValues, userId }: UserProfileInfosFormPro
             <Button
               type="submit"
               className="h-[50px] max-h-full px-5 text-[16px] font-[400] [&_svg:not([class*='size-'])]:size-6"
+              disabled={isLoadingUpdate}
             >
               {isLoadingUpdate ? <CgSpinner className="animate-spin" /> : "Salvar alterações"}
             </Button>

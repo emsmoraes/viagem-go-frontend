@@ -2,6 +2,7 @@ import { Proposal } from "@/shared/models/proposal.model";
 import { FiEdit3 } from "react-icons/fi";
 import { HiOutlineShare, HiOutlinePhotograph } from "react-icons/hi";
 import DeleteProposal from "../DeleteProposal";
+import { Link } from "react-router-dom";
 
 export function ProposalItem({ proposal }: { proposal: Proposal }) {
   return (
@@ -9,7 +10,7 @@ export function ProposalItem({ proposal }: { proposal: Proposal }) {
       <div className="relative flex h-52 items-center justify-center overflow-hidden bg-gray-100">
         {proposal.coverUrl ? (
           <img
-            src={proposal.coverUrl}
+            src={`${proposal.coverUrl}?${proposal.updatedAt}`}
             alt={proposal.title}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
           />
@@ -26,9 +27,12 @@ export function ProposalItem({ proposal }: { proposal: Proposal }) {
       </div>
 
       <div className="my-4 flex h-[45px] items-center justify-between gap-4 px-4">
-        <button className="text-primary flex h-full flex-1 items-center justify-center gap-2 rounded-full bg-blue-100 px-4 font-medium">
+        <Link
+          to={`/proposals/${proposal.id}/passengers`}
+          className="text-primary flex h-full flex-1 items-center justify-center gap-2 rounded-full bg-blue-100 px-4 font-medium"
+        >
           <FiEdit3 size={20} /> Editar
-        </button>
+        </Link>
         <DeleteProposal proposalId={proposal.id} />
         <button className="text-primary h-full rounded-full bg-blue-100 px-3">
           <HiOutlineShare size={21} />

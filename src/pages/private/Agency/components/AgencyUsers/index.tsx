@@ -1,5 +1,4 @@
 import { User } from "@/shared/models";
-import React from "react";
 import { DataTable } from "../DataTable";
 import { columns } from "../Columns/columns";
 

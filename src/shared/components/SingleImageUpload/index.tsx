@@ -17,6 +17,8 @@ interface SingleImageUploadProps {
   onChange?: (file: File | null) => void;
   ImagePickerPlaceholder?: ElementType;
   isPending?: boolean;
+  errorMessage?: string;
+  hiddenDelete?: boolean;
 }
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
@@ -24,10 +26,12 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   onChange,
   ImagePickerPlaceholder,
   isPending = false,
+  errorMessage,
+  hiddenDelete = false,
 }) => {
   const imageUrl =
     currentImage instanceof File
-      ? URL.createObjectURL(currentImage) + "?" + new Date().getTime()
+      ? URL.createObjectURL(currentImage)
       : typeof currentImage === "string"
         ? currentImage + "?" + new Date().getTime()
         : null;
@@ -48,17 +52,32 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
     <div className="flex flex-col items-center gap-2">
       {imageUrl ? (
         <div className="relative h-40 w-40 rounded-full">
-          <img src={imageUrl} alt="Preview" className="h-full w-full rounded-full object-cover shadow-md" />
+          <label htmlFor="file-input" className="cursor-pointer">
+            <img src={imageUrl} alt="Preview" className="h-full w-full rounded-full object-cover shadow-md" />
+          </label>
+          <input
+            id="file-input"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+            disabled={isPending}
+          />
+
           <Dialog>
-            <DialogTrigger asChild>
-              <button
-                type="button"
-                disabled={isPending}
-                className={`absolute right-3 bottom-1 flex items-center justify-center rounded-full p-1 shadow-md ${isPending ? "cursor-not-allowed bg-gray-400" : "bg-red-500 text-white hover:bg-red-600"}`}
-              >
-                <HiOutlineTrash size={22} />
-              </button>
-            </DialogTrigger>
+            {!hiddenDelete && (
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  disabled={isPending}
+                  className={`absolute right-3 bottom-1 flex items-center justify-center rounded-full p-1 shadow-md ${
+                    isPending ? "cursor-not-allowed bg-gray-400" : "bg-red-500 text-white hover:bg-red-600"
+                  }`}
+                >
+                  <HiOutlineTrash size={22} />
+                </button>
+              </DialogTrigger>
+            )}
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Confirmar Exclusão</DialogTitle>
@@ -81,6 +100,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
         </div>
       ) : (
         <label
+          htmlFor="file-input"
           className={`border-primary hover:border-primary/80 group flex h-40 w-40 cursor-pointer flex-col items-center justify-center rounded-full border-3 border-dashed ${
             isPending ? "cursor-not-allowed opacity-50" : ""
           }`}
@@ -90,9 +110,17 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
           ) : (
             <span className="text-sm text-gray-500">Clique para enviar</span>
           )}
-          <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={isPending} />
+          <input
+            id="file-input"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+            disabled={isPending}
+          />
         </label>
       )}
+      <p className="text-red-800">{errorMessage}</p>
     </div>
   );
 };

@@ -45,6 +45,18 @@ const UserProfileRouter = lazy(() =>
   })),
 );
 
+const EditProposalRouter = lazy(() =>
+  import("@/pages/private/EditProposal").then((module) => ({
+    default: module.EditProposal,
+  })),
+);
+
+const PassengersRouter = lazy(() =>
+  import("@/pages/private/EditProposal/Passengers").then((module) => ({
+    default: module.Passengers,
+  })),
+);
+
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
@@ -107,10 +119,14 @@ export function Router(): ReactElement {
           <Route element={<Private />}>
             <Route element={<Dashboard />}>
               <Route path="/" element={<HomeRouter />} />
-              <Route path="proposals" element={<ProposalsRouter />} />
               <Route path="clients" element={<ClientsRouter />} />
               <Route path="agency" element={<AgencyRouter />} />
               <Route path="profile" element={<UserProfileRouter />} />
+              <Route path="proposals" element={<ProposalsRouter />} />
+
+              <Route path="proposals/:id" element={<EditProposalRouter />}>
+                <Route path="passengers" element={<PassengersRouter />} />
+              </Route>
             </Route>
           </Route>
         )}
