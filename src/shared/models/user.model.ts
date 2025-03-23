@@ -1,3 +1,18 @@
+export enum UserRole {
+  OWNER = "OWNER",
+  ADMIN = "ADMIN",
+  EMPLOYEE = "EMPLOYEE",
+}
+
+export interface UserRoleEntry {
+  id: string;
+  role: UserRole;
+  userId: string;
+  agencyId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -6,7 +21,8 @@ export interface User {
   phone: string | null;
   avatarUrl: string | null;
   agencyId: string;
-  type: "AGENCY_ADMIN" | "AGENCY_EMPLOYEE";
+  userRoles: UserRoleEntry[];
+  active: boolean;
   proposalThankYouMessageTitle: string | null;
   proposalThankYouMessageSubtitle: string | null;
   createdAt: string;

@@ -4,7 +4,7 @@ import { Agency } from "@/shared/models/agency.model";
 
 export interface AgencyResponse extends Agency {}
 
-export type UpdateAgencyRequest = Omit<Agency, "id" | "logoUrl" | "createdAt" | "updatedAt">;
+export type UpdateAgencyRequest = Omit<Agency, "id" | "logoUrl" | "createdAt" | "updatedAt" | "users">;
 
 const getAgency = async (): Promise<AgencyResponse> => {
   try {

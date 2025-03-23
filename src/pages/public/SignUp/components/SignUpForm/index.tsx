@@ -15,12 +15,12 @@ const signUpSchema = z.object({
   email: z.string().email({ message: "E-mail inválido." }),
 });
 
-function SignUpForm() { 
+function SignUpForm() {
   const redirectUrl = `${window.location.origin}/activate-user`;
 
   const { signup, isLoadingSignup } = useSignupMutation({
     onSuccess: () => {
-      toast.success("Conta criada com sucesso! Verifique seu e-mail.");
+      toast.success("Cadastro concluído! Verifique seu e-mail para ativar sua conta.");
     },
     onError: () => {
       toast.error("Erro ao criar conta. Verifique se o e-mail já está em uso.");
@@ -41,8 +41,8 @@ function SignUpForm() {
   }
 
   return (
-    <div className="w-full space-y-6 bg-white rounded-3xl shadow-xl px-7 py-10">
-      <h1 className="text-4xl font-medium text-center ">
+    <div className="w-full space-y-6 rounded-3xl bg-white px-7 py-10 shadow-xl">
+      <h1 className="text-center text-4xl font-medium">
         VIAGEM<span className="text-primary">GO</span>
       </h1>
       <Form {...form}>
@@ -63,7 +63,11 @@ function SignUpForm() {
             )}
           />
 
-          <Button type="submit" className="w-full py-5 mt-5 [&_svg:not([class*='size-'])]:size-6" disabled={isLoadingSignup}>
+          <Button
+            type="submit"
+            className="mt-5 w-full py-5 [&_svg:not([class*='size-'])]:size-6"
+            disabled={isLoadingSignup}
+          >
             {isLoadingSignup ? <CgSpinner className="animate-spin" /> : "Criar conta"}
           </Button>
         </form>
@@ -71,7 +75,7 @@ function SignUpForm() {
       <div className="flex items-center justify-center">
         <p className="text-sm text-gray-500">
           Já tem uma conta?{" "}
-          <Link to="/sign-in" className="text-primary underline cursor-pointer hover:text-primary/80">
+          <Link to="/sign-in" className="text-primary hover:text-primary/80 cursor-pointer underline">
             Entrar
           </Link>
         </p>

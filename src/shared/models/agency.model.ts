@@ -1,3 +1,5 @@
+import { User } from "./user.model";
+
 export interface Agency {
   id: string;
   logoUrl: string | null;
@@ -8,6 +10,7 @@ export interface Agency {
   instagram: string | null;
   locationLink?: string | null;
   description: string | null;
+  users?: Omit<User, "password">[];
   createdAt: string;
   updatedAt: string;
 }

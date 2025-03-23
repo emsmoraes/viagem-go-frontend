@@ -24,8 +24,8 @@ function AgencyLogo({ agency, queryClient }: AgencyLogoProps) {
       try {
         await AgencyService.deleteAgencyLogo();
         setLogo(null);
-        toast.success("Logo removida com sucesso!");
         queryClient.invalidateQueries({ queryKey: ["agency"] });
+        toast.success("Logo removida com sucesso!");
       } catch {
         toast.error("Erro ao remover logo.");
       }
@@ -41,8 +41,8 @@ function AgencyLogo({ agency, queryClient }: AgencyLogoProps) {
       try {
         const response = await AgencyService.updateAgencyLogo(file);
         setLogo(response.logoUrl);
-        toast.success("Logo atualizada com sucesso!");
         queryClient.invalidateQueries({ queryKey: ["agency"] });
+        toast.success("Logo atualizada com sucesso!");
       } catch {
         toast.error("Erro ao atualizar logo.");
       }
