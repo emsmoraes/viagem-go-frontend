@@ -10,7 +10,7 @@ interface EditProposalInfosFormProps {
 
 function EditProposalInfosForm({ form }: EditProposalInfosFormProps) {
   return (
-    <div className="flex-1">
+    <div className="min-w-[200px] flex-1">
       <Form {...form}>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
           <FormField

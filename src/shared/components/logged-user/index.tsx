@@ -22,10 +22,7 @@ const LoggedUser = () => {
         <div className="flex cursor-pointer items-center gap-2 rounded-xl pr-0 duration-200 hover:bg-gray-100 hover:opacity-90">
           <Link to={"/profile"} className="flex flex-grow items-center gap-2 py-3 pl-3 hover:text-blue-500">
             <Avatar>
-              <AvatarImage
-                src="https://upload.wikimedia.org/wikipedia/it/thumb/8/81/Fredfl.jpg/260px-Fredfl.jpg"
-                alt="avatar"
-              />
+              <AvatarImage className="object-cover" src={`${user!.avatarUrl!}?${user?.updatedAt}`} alt="avatar" />
               <AvatarFallback>{user?.name?.slice(0, 1).toUpperCase()}</AvatarFallback>
             </Avatar>
             <p className="truncate overflow-hidden text-[16px] font-[400] text-nowrap text-ellipsis text-black">

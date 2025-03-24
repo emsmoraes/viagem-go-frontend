@@ -14,6 +14,7 @@ import ActivateUser from "@/pages/public/ActivateUser";
 import ForgotPassword from "@/pages/public/ForgotPassword";
 import UpdatePassword from "@/pages/public/UpdatePassword";
 import { Dashboard } from "../components/layout/dashboard";
+import { SteppersProvider } from "@/pages/private/EditProposal/contexts/SteppersContext/ContextSteppers";
 
 const HomeRouter = lazy(() =>
   import("@/pages/private/Home").then((module) => ({
@@ -54,6 +55,12 @@ const EditProposalRouter = lazy(() =>
 const PassengersRouter = lazy(() =>
   import("@/pages/private/EditProposal/Passengers").then((module) => ({
     default: module.Passengers,
+  })),
+);
+
+const ItineraryRouter = lazy(() =>
+  import("@/pages/private/EditProposal/Itinerary").then((module) => ({
+    default: module.Itinerary,
   })),
 );
 
@@ -125,6 +132,26 @@ export function Router(): ReactElement {
               <Route path="proposals" element={<ProposalsRouter />} />
 
               <Route path="proposals/:id" element={<EditProposalRouter />}>
+                <Route path="passengers" element={<PassengersRouter />} />
+              </Route>
+
+              <Route
+                path="proposals/:id"
+                element={
+                  <SteppersProvider>
+                    <EditProposalRouter />
+                  </SteppersProvider>
+                }
+              >
+                <Route path="itinerary" element={<ItineraryRouter />} />
+                <Route path="flights" element={<h2>Passagem</h2>} />
+                <Route path="accommodations" element={<h2>Hospedagem</h2>} />
+                <Route path="cruise" element={<h2>Cruzeiro</h2>} />
+                <Route path="transport" element={<h2>Transporte</h2>} />
+                <Route path="experiences" element={<h2>Experiências</h2>} />
+                <Route path="insurance" element={<h2>Seguros</h2>} />
+                <Route path="extras" element={<h2>Extras</h2>} />
+                <Route path="summary" element={<h2>Resumo</h2>} />
                 <Route path="passengers" element={<PassengersRouter />} />
               </Route>
             </Route>

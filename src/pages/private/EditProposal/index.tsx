@@ -4,10 +4,11 @@ import { Navigate, Outlet, useParams } from "react-router-dom";
 import { CgSpinner } from "react-icons/cg";
 import EditProposalProfile from "./components/EditProposalProfile";
 import { useGetProposal } from "./hooks/useEditProposal";
+import StagesNav from "./components/StagesNav";
+import { useSteppers } from "./contexts/SteppersContext/useSteppers";
 
 export function EditProposal() {
-  const { id } = useParams();
-  const { proposal, isLoadingProposal, isErrorProposal } = useGetProposal(id ?? "");
+  const { isErrorProposal, isLoadingProposal, proposal } = useSteppers();
 
   if (isLoadingProposal) {
     return (
@@ -38,6 +39,10 @@ export function EditProposal() {
         />
 
         <Separator className="mt-10 mb-6" />
+
+        <div className="lg:pr-6">
+          <StagesNav proposalId={proposal.id} />
+        </div>
 
         <Outlet />
       </div>

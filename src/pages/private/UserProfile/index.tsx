@@ -43,7 +43,7 @@ export function UserProfile() {
         const response = await UserProfileService.updateUserAvatar(file);
 
         setProfileImage(response.avatarUrl);
-        setUser({ ...user, avatarUrl: response.avatarUrl });
+        setUser({ ...user, avatarUrl: response.avatarUrl, updatedAt: JSON.stringify(new Date()) });
 
         toast.success("Avatar atualizado com sucesso!");
       } catch {

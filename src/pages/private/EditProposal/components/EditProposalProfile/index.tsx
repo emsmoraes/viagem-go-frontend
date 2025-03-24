@@ -50,7 +50,6 @@ function EditProposalProfile({ defaultValues, proposalId }: EditProposalProfileP
 
   const { updateProposal, isLoadingUpdateProposal } = useUpdateProposalMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["proposals"], exact: false });
       queryClient.invalidateQueries({ queryKey: ["proposal", proposalId] });
       queryClient.refetchQueries({ queryKey: ["proposals"] });
 

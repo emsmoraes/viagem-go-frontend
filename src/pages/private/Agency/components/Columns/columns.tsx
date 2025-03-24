@@ -5,16 +5,6 @@ import { Button } from "@/shared/components/ui/button";
 
 export const columns: ColumnDef<Omit<User, "password">>[] = [
   {
-    accessorKey: "avatarUrl",
-    header: "Imagem",
-    cell: ({ row }) => (
-      <Avatar className="h-12 w-12">
-        <AvatarImage src={row.original.avatarUrl ?? undefined} alt={row.original.name || "Usuário"} />
-        <AvatarFallback className="text-lg">{row.original.email?.charAt(0) || "-"}</AvatarFallback>
-      </Avatar>
-    ),
-  },
-  {
     accessorKey: "name",
     header: "Nome",
     cell: ({ row }) => row.original.name || "-",

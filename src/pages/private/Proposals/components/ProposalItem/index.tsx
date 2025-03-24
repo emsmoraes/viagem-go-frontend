@@ -28,7 +28,7 @@ export function ProposalItem({ proposal }: { proposal: Proposal }) {
 
       <div className="my-4 flex h-[45px] items-center justify-between gap-4 px-4">
         <Link
-          to={`/proposals/${proposal.id}/passengers`}
+          to={`/proposals/${proposal.id}/itinerary`}
           className="text-primary flex h-full flex-1 items-center justify-center gap-2 rounded-full bg-blue-100 px-4 font-medium"
         >
           <FiEdit3 size={20} /> Editar
