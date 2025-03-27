@@ -39,13 +39,13 @@ export const columns: ColumnDef<Omit<User, "password">>[] = [
     header: "Status",
     cell: ({ row }) => (row.original.active ? "Ativo" : "Pendente"),
   },
-  {
-    id: "actions",
-    header: "Ações",
-    cell: ({ row }) => (
-      <Button variant="outline" disabled>
-        Editar
-      </Button>
-    ),
-  },
+  // {
+  //   id: "actions",
+  //   header: "Ações",
+  //   cell: ({ row }) => (
+  //     <Button variant="outline" disabled>
+  //       Editar
+  //     </Button>
+  //   ),
+  // },
 ];

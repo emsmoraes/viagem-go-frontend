@@ -40,7 +40,7 @@ export function EditProposal() {
 
         <Separator className="mt-10 mb-6" />
 
-        <div className="lg:pr-6">
+        <div className="mb-8 lg:pr-6">
           <StagesNav proposalId={proposal.id} />
         </div>
 

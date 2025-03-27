@@ -1,10 +1,11 @@
 import React, { createContext, useContext, ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProposal } from "../../hooks/useEditProposal";
+import { Proposal } from "@/shared/models/proposal.model";
 
 export interface SteppersContextType {
   id: string | undefined;
-  proposal: any;
+  proposal: Proposal | null;
   isLoadingProposal: boolean;
   isErrorProposal: boolean;
 }

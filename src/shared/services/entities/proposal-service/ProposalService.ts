@@ -13,6 +13,12 @@ interface CreateProposalRequest {
   title: string;
 }
 
+interface CreateProposalPassengerRequest {
+  name: string;
+  proposalId: string;
+  PassengerId?: string;
+}
+
 type GetProposalByIdResponse = Pick<
   Proposal,
   "id" | "title" | "coverUrl" | "status" | "departureDate" | "returnDate" | "userId" | "createdAt" | "updatedAt"
