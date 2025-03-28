@@ -82,8 +82,6 @@ function EditProposalProfile({ defaultValues, proposalId }: EditProposalProfileP
 
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
 
-  console.log(isFormDirty);
-
   return (
     <div className="w-full lg:pr-6">
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
