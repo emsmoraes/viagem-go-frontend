@@ -61,7 +61,8 @@ function EditProposalProfile({ defaultValues, proposalId }: EditProposalProfileP
   });
 
   const handleImageChange = (file: File | null) => {
-    form.setValue("profileImage", file);
+    form.setValue("profileImage", file, { shouldDirty: true });
+    form.trigger("profileImage");
   };
 
   const onSubmit = (data: ProposalSchema) => {
@@ -73,7 +74,15 @@ function EditProposalProfile({ defaultValues, proposalId }: EditProposalProfileP
     };
 
     updateProposal(proposalId, payload);
+
+    form.reset({
+      ...data,
+    });
   };
+
+  const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
+
+  console.log(isFormDirty);
 
   return (
     <div className="w-full lg:pr-6">
@@ -95,7 +104,7 @@ function EditProposalProfile({ defaultValues, proposalId }: EditProposalProfileP
           <Button
             type="submit"
             className="h-[50px] max-h-full px-5 text-[16px] font-[400] [&_svg:not([class*='size-'])]:size-6"
-            disabled={isLoadingUpdateProposal}
+            disabled={isLoadingUpdateProposal || !isFormDirty}
           >
             {isLoadingUpdateProposal ? <CgSpinner className="animate-spin" /> : "Salvar alterações"}
           </Button>
