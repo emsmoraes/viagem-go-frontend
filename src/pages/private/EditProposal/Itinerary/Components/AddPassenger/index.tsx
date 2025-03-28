@@ -2,11 +2,11 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import React, { useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { useSteppers } from "../../contexts/SteppersContext/useSteppers";
-import { useCreatePassengerMutation } from "../../Passengers/hooks/usePassengers";
 import { CgSpinner } from "react-icons/cg";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useCreatePassengerMutation } from "../../hooks/usePassengers";
+import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
 
 function AddPassenger() {
   const [name, setName] = useState("");

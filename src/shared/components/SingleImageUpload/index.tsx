@@ -120,7 +120,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
           />
         </label>
       )}
-      <p className="text-red-800">{errorMessage}</p>
+      <p className="text-red-500">{errorMessage}</p>
     </div>
   );
 };

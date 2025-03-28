@@ -1,10 +1,12 @@
 import React from "react";
-import PassengersAccordion from "../components/PassengersAccordion";
+import DestinationsAccordion from "./Components/DestinationsAccordion";
+import PassengersAccordion from "./Components/PassengersAccordion";
 
 export function Itinerary() {
   return (
-    <div className="lg:pr-6">
+    <div className="space-y-3 lg:pr-6">
       <PassengersAccordion />
+      <DestinationsAccordion />
     </div>
   );
 }

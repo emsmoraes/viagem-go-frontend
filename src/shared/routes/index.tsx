@@ -52,12 +52,6 @@ const EditProposalRouter = lazy(() =>
   })),
 );
 
-const PassengersRouter = lazy(() =>
-  import("@/pages/private/EditProposal/Passengers").then((module) => ({
-    default: module.Passengers,
-  })),
-);
-
 const ItineraryRouter = lazy(() =>
   import("@/pages/private/EditProposal/Itinerary").then((module) => ({
     default: module.Itinerary,
@@ -131,10 +125,6 @@ export function Router(): ReactElement {
               <Route path="profile" element={<UserProfileRouter />} />
               <Route path="proposals" element={<ProposalsRouter />} />
 
-              <Route path="proposals/:id" element={<EditProposalRouter />}>
-                <Route path="passengers" element={<PassengersRouter />} />
-              </Route>
-
               <Route
                 path="proposals/:id"
                 element={
@@ -152,7 +142,6 @@ export function Router(): ReactElement {
                 <Route path="insurance" element={<h2>Seguros</h2>} />
                 <Route path="extras" element={<h2>Extras</h2>} />
                 <Route path="summary" element={<h2>Resumo</h2>} />
-                <Route path="passengers" element={<PassengersRouter />} />
               </Route>
             </Route>
           </Route>

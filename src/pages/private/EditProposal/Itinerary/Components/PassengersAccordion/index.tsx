@@ -2,41 +2,16 @@ import React, { useCallback, useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/components/ui/accordion";
 import { FiUsers } from "react-icons/fi";
 import { Input } from "@/shared/components/ui/input";
-import { Card, CardContent } from "@/shared/components/ui/card";
-import AddPassenger from "../AddPassenger";
-import { useSteppers } from "../../contexts/SteppersContext/useSteppers";
-import { friendlyDate } from "@/shared/utils/friendlyDate";
-import { Button } from "@/shared/components/ui/button";
-import { HiOutlineTrash } from "react-icons/hi";
-import { toast } from "sonner";
-import { useDeletePassengerMutation } from "../../Passengers/hooks/usePassengers";
-import { CgSpinner } from "react-icons/cg";
-import { useQueryClient } from "@tanstack/react-query";
 import { debounce } from "@/shared/utils/debounce";
+import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
+import PassengerItem from "../PassengerItem";
+import AddPassenger from "../AddPassenger";
 
 function PassengersAccordion() {
   const [searchValue, setSearchValue] = useState("");
   const { proposal } = useSteppers();
-  const queryClient = useQueryClient();
 
   const passengers = proposal?.passengers ?? [];
-
-  const { deletePassenger, isLoadingDeletePassenger } = useDeletePassengerMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
-      toast("Passageiro excluído com sucesso");
-    },
-    onError: () => {
-      toast("Erro ao excluir passageiro");
-    },
-  });
-
-  const handleDelete = (id: string) => {
-    const proposalId = proposal?.id;
-    if (!proposalId) return;
-
-    deletePassenger({ id, proposalId });
-  };
 
   const onInput = (searchValue: string): void => {
     setSearchValue(searchValue);
@@ -71,23 +46,7 @@ function PassengersAccordion() {
 
           <div className="space-y-3">
             {filteredPassengers.map((passenger) => (
-              <Card key={passenger.id}>
-                <CardContent className="relative flex items-center justify-between">
-                  <div>
-                    <p>{passenger.name}</p>
-                    <small className="absolute block text-gray-400/80">{friendlyDate(passenger.createdAt)}</small>
-                  </div>
-
-                  <Button
-                    disabled={isLoadingDeletePassenger}
-                    size={"icon"}
-                    variant={"destructive"}
-                    onClick={() => handleDelete(passenger.id)}
-                  >
-                    {isLoadingDeletePassenger ? <CgSpinner className="animate-spin" /> : <HiOutlineTrash />}
-                  </Button>
-                </CardContent>
-              </Card>
+              <PassengerItem key={passenger.id} passenger={passenger} proposal={proposal!} />
             ))}
           </div>
         </AccordionContent>

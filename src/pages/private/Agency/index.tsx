@@ -7,7 +7,6 @@ import AgencyInfosForm from "./components/AgencyInfosForm";
 import { useQueryClient } from "@tanstack/react-query";
 import AgencyUsers from "./components/AgencyUsers";
 import { Separator } from "@/shared/components/ui/separator";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import InviteUserModal from "./components/InviteUserModal";
 import clsx from "clsx";
 
