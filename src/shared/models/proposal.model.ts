@@ -1,3 +1,4 @@
+import { Destination } from "./destination.model";
 import { Passenger } from "./passenger.model";
 
 export interface Proposal {
@@ -9,6 +10,7 @@ export interface Proposal {
   returnDate: string | null;
   userId: string;
   passengers?: Passenger[];
+  destinations?: Destination[];
   createdAt: string;
   updatedAt: string;
 }

@@ -51,7 +51,7 @@ export function Agency() {
         <Separator className="mt-10 mb-6" />
 
         {agency.users && (
-          <div>
+          <div className="lg:pr-6">
             <div className="mb-8 flex items-center gap-4">
               <h1 className="text-xl font-medium">Usuários</h1>
               <InviteUserModal agencyId={agency.id} />

@@ -47,7 +47,7 @@ function AddPassenger() {
       />
       <Button
         type="submit"
-        disabled={!name || isLoadingCreatePassenger}
+        disabled={!name.trim() || isLoadingCreatePassenger}
         className="absolute top-1/2 right-2 flex h-fit w-auto -translate-y-1/2 items-center justify-center p-[2px] [&_svg:not([class*='size-'])]:size-6"
         size="icon"
       >

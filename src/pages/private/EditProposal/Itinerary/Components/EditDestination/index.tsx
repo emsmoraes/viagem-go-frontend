@@ -1,109 +1,117 @@
-import ImagePreview from "@/shared/components/ImagePreview";
-import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
 import { Button } from "@/shared/components/ui/button";
-import { CalendarDatePicker } from "@/shared/components/ui/calendar-date-picker";
+import React, { memo, useState } from "react";
+import { CgSpinner } from "react-icons/cg";
+import { FiEdit2 } from "react-icons/fi";
+import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
+import { useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/shared/components/ui/alert-dialog";
+import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
+import ImagePreview from "@/shared/components/ImagePreview";
 import { Input } from "@/shared/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { IoIosAddCircleOutline } from "react-icons/io";
+import { CalendarDatePicker } from "@/shared/components/ui/calendar-date-picker";
 import { PiImages } from "react-icons/pi";
-import { z } from "zod";
-import { useCreateDestinationMutation } from "../../hooks/useDestination";
-import { CgSpinner } from "react-icons/cg";
 import { toast } from "sonner";
-import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
-import { useQueryClient } from "@tanstack/react-query";
-
-export interface DateRange {
-  from: Date;
-  to: Date;
-}
-
-const defaultDateRange: DateRange = {
-  from: new Date(),
-  to: new Date(new Date().setDate(new Date().getDate() + 1)),
-};
+import { useCreateDestinationMutation, useUpdateDestinationMutation } from "../../hooks/useDestination";
+import { separateFilesAndStrings } from "@/shared/utils/separateFilesAndStrings";
 
 const destinationSchema = z.object({
   name: z.string().trim().min(1, { message: "O nome é obrigatório." }),
   description: z.string().trim().optional(),
-  dateRange: z
-    .object({
-      from: z.date(),
-      to: z.date(),
-    })
-    .default(defaultDateRange),
-  images: z.instanceof(File).array().optional().nullable(),
+  dateRange: z.object({
+    from: z.date(),
+    to: z.date(),
+  }),
+  images: z
+    .union([z.instanceof(File), z.string()])
+    .array()
+    .optional()
+    .nullable(),
 });
 
 export type DestinationSchema = z.infer<typeof destinationSchema>;
 
 const DestinationImagesPlaceholder = () => <PiImages size={40} className="text-primary group-hover:text-primary/80" />;
 
-function AddDestination() {
+interface EditDestinationProps {
+  defaultValues: DestinationSchema;
+  destinationId: string;
+}
+
+function EditDestination({ defaultValues, destinationId }: EditDestinationProps) {
   const [open, setOpen] = useState(false);
   const { proposal } = useSteppers();
   const queryClient = useQueryClient();
+
+  const { updateDestination, isLoadingUpdateDestination } = useUpdateDestinationMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
+      setOpen(false);
+      toast("Destino editado com sucesso");
+    },
+    onError: () => toast("Erro ao editar destino"),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-    reset,
-  } = useForm({ resolver: zodResolver(destinationSchema), defaultValues: { dateRange: defaultDateRange } });
+    formState,
+    trigger,
+  } = useForm({ resolver: zodResolver(destinationSchema), defaultValues });
 
-  const { createDestination, isLoadingCreateDestination } = useCreateDestinationMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
-      setOpen(false);
-      reset();
-      toast("Destino adicionado com sucesso");
-    },
-    onError: () => toast("Erro ao criar destino"),
-  });
-
-  const onSubmit = (data: DestinationSchema) => {
-    createDestination({
-      name: data.name,
-      description: data.description,
-      departureDate: data.dateRange.from.toISOString(),
-      returnDate: data.dateRange.to.toISOString(),
-      images: data.images ?? [],
-      proposalId: proposal?.id!,
-    });
-  };
+  const isFormDirty = Object.keys(formState.dirtyFields).length > 0;
 
   const images = watch("images") ?? [];
 
   const handleImageChange = (newFiles: File[] | null) => {
     if (newFiles) {
       const filesArray = Array.from(newFiles);
-      setValue("images", [...(images || []), ...filesArray]);
+      setValue("images", [...(images || []), ...filesArray], { shouldDirty: true });
+      trigger("images");
     }
   };
 
   const handleImageDelete = (index: number) => {
+    trigger("images");
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
-    setValue("images", updatedImages);
+    setValue("images", updatedImages, { shouldDirty: true });
+  };
+
+  const onSubmit = (data: DestinationSchema) => {
+    const { files, strings } = separateFilesAndStrings(data.images ?? []);
+
+    updateDestination({
+      id: destinationId,
+      data: {
+        name: data.name,
+        description: data.description,
+        departureDate: data.dateRange.from.toISOString(),
+        returnDate: data.dateRange.to.toISOString(),
+        images: files,
+        existingImages: strings,
+      },
+    });
   };
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} className="[&_svg:not([class*='size-'])]:size-6">
-        <IoIosAddCircleOutline /> Adicionar
+      <Button onClick={() => setOpen(true)} disabled={false} size={"icon"}>
+        {false ? <CgSpinner className="animate-spin" /> : <FiEdit2 />}
       </Button>
+
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogDescription />
@@ -156,9 +164,9 @@ function AddDestination() {
               <Button
                 type="submit"
                 className="flex-1 [&_svg:not([class*='size-'])]:size-6"
-                disabled={isLoadingCreateDestination}
+                disabled={!isFormDirty || isLoadingUpdateDestination}
               >
-                {isLoadingCreateDestination ? <CgSpinner className="animate-spin" /> : "Salvar"}
+                {isLoadingUpdateDestination ? <CgSpinner className="animate-spin" /> : "Salvar"}
               </Button>
             </div>
           </form>
@@ -168,4 +176,4 @@ function AddDestination() {
   );
 }
 
-export default AddDestination;
+export default memo(EditDestination);

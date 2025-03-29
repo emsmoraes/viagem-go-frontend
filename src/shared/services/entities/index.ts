@@ -3,3 +3,6 @@ export * from "./sign-up-service/SignUpService";
 export * from "./forgot-password-service/forgotPasswordService";
 export * from "./payment-service/PaymentService";
 export * from "./user-profile/UserProfileService";
+export * from "./proposal-service/ProposalService";
+export * from "./proposal-service/destination-service/DestinationService";
+export * from "./proposal-service/passenger-service/PassengerService";
