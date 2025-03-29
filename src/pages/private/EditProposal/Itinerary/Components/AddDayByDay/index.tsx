@@ -1,12 +1,7 @@
+import ImagePreview from "@/shared/components/ImagePreview";
+import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
 import { Button } from "@/shared/components/ui/button";
-import React, { memo, useState } from "react";
-import { CgSpinner } from "react-icons/cg";
-import { FiEdit2 } from "react-icons/fi";
-import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
-import { useQueryClient } from "@tanstack/react-query";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarDatePicker } from "@/shared/components/ui/calendar-date-picker";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -15,110 +10,104 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/shared/components/ui/alert-dialog";
-import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
-import ImagePreview from "@/shared/components/ImagePreview";
 import { Input } from "@/shared/components/ui/input";
-import { CalendarDatePicker } from "@/shared/components/ui/calendar-date-picker";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import { PiImages } from "react-icons/pi";
+import { z } from "zod";
+import { CgSpinner } from "react-icons/cg";
 import { toast } from "sonner";
-import { useCreateDestinationMutation, useUpdateDestinationMutation } from "../../hooks/useDestination";
-import { separateFilesAndStrings } from "@/shared/utils/separateFilesAndStrings";
+import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCreateDayByDayMutation } from "../../hooks/useDayByDay";
+
+export interface DateRange {
+  from: Date;
+  to: Date;
+}
+
+const defaultDateRange: DateRange = {
+  from: new Date(),
+  to: new Date(new Date().setDate(new Date().getDate() + 1)),
+};
 
 const destinationSchema = z.object({
-  name: z.string().trim().min(1, { message: "O nome é obrigatório." }),
+  title: z.string().trim().min(1, { message: "O nome é obrigatório." }),
   description: z.string().trim().optional(),
-  dateRange: z.object({
-    from: z.date(),
-    to: z.date(),
-  }),
-  images: z
-    .union([z.instanceof(File), z.string()])
-    .array()
-    .optional()
-    .nullable(),
+  dateRange: z
+    .object({
+      from: z.date(),
+      to: z.date(),
+    })
+    .default(defaultDateRange),
+  images: z.instanceof(File).array().optional().nullable(),
 });
 
 export type DestinationSchema = z.infer<typeof destinationSchema>;
 
 const DestinationImagesPlaceholder = () => <PiImages size={40} className="text-primary group-hover:text-primary/80" />;
 
-interface EditDestinationProps {
-  defaultValues: DestinationSchema;
-  destinationId: string;
-}
-
-function EditDestination({ defaultValues, destinationId }: EditDestinationProps) {
+function AddDayByDay() {
   const [open, setOpen] = useState(false);
   const { proposal } = useSteppers();
   const queryClient = useQueryClient();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-    formState,
-    trigger,
     reset,
-  } = useForm({ resolver: zodResolver(destinationSchema), defaultValues });
+  } = useForm({ resolver: zodResolver(destinationSchema), defaultValues: { dateRange: defaultDateRange } });
 
-  const { updateDestination, isLoadingUpdateDestination } = useUpdateDestinationMutation({
+  const { createDayByDay, isLoadingCreateDayByDay } = useCreateDayByDayMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
-      reset(watch());
       setOpen(false);
-      toast("Destino editado com sucesso");
+      reset();
+      toast("Day by day adicionado com sucesso");
     },
-    onError: () => toast("Erro ao editar destino"),
+    onError: () => toast("Erro ao criar day by day"),
   });
 
-  const isFormDirty = Object.keys(formState.dirtyFields).length > 0;
+  const onSubmit = (data: DestinationSchema) => {
+    createDayByDay({
+      title: data.title,
+      description: data.description,
+      departureDate: data.dateRange.from.toISOString(),
+      returnDate: data.dateRange.to.toISOString(),
+      images: data.images ?? [],
+      proposalId: proposal?.id!,
+    });
+  };
 
   const images = watch("images") ?? [];
 
   const handleImageChange = (newFiles: File[] | null) => {
     if (newFiles) {
       const filesArray = Array.from(newFiles);
-      setValue("images", [...(images || []), ...filesArray], { shouldDirty: true });
-      trigger("images");
+      setValue("images", [...(images || []), ...filesArray]);
     }
   };
 
   const handleImageDelete = (index: number) => {
-    trigger("images");
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
-    setValue("images", updatedImages, { shouldDirty: true });
-  };
-
-  const onSubmit = (data: DestinationSchema) => {
-    const { files, strings } = separateFilesAndStrings(data.images ?? []);
-
-    updateDestination({
-      id: destinationId,
-      data: {
-        name: data.name,
-        description: data.description,
-        departureDate: data.dateRange.from.toISOString(),
-        returnDate: data.dateRange.to.toISOString(),
-        images: files,
-        existingImages: strings,
-      },
-    });
+    setValue("images", updatedImages);
   };
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} disabled={false} size={"icon"}>
-        {false ? <CgSpinner className="animate-spin" /> : <FiEdit2 />}
+      <Button onClick={() => setOpen(true)} className="[&_svg:not([class*='size-'])]:size-6">
+        <IoIosAddCircleOutline /> Adicionar
       </Button>
-
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogDescription />
           <AlertDialogHeader className="mb-3">
-            <AlertDialogTitle>Editar Destino</AlertDialogTitle>
+            <AlertDialogTitle>Adicionar Day by Day</AlertDialogTitle>
           </AlertDialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
             <div className="mb-5 flex flex-wrap gap-3">
@@ -142,8 +131,8 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
 
             <div>
               <label className="block text-sm font-medium">Nome</label>
-              <Input {...register("name")} placeholder="Digite o nome" />
-              {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
+              <Input {...register("title")} placeholder="Digite o nome" />
+              {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium">Descrição</label>
@@ -166,9 +155,9 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
               <Button
                 type="submit"
                 className="flex-1 [&_svg:not([class*='size-'])]:size-6"
-                disabled={!isFormDirty || isLoadingUpdateDestination}
+                disabled={isLoadingCreateDayByDay}
               >
-                {isLoadingUpdateDestination ? <CgSpinner className="animate-spin" /> : "Salvar"}
+                {isLoadingCreateDayByDay ? <CgSpinner className="animate-spin" /> : "Salvar"}
               </Button>
             </div>
           </form>
@@ -178,4 +167,4 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
   );
 }
 
-export default memo(EditDestination);
+export default AddDayByDay;

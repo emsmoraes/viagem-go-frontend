@@ -21,11 +21,11 @@ import { Input } from "@/shared/components/ui/input";
 import { CalendarDatePicker } from "@/shared/components/ui/calendar-date-picker";
 import { PiImages } from "react-icons/pi";
 import { toast } from "sonner";
-import { useCreateDestinationMutation, useUpdateDestinationMutation } from "../../hooks/useDestination";
 import { separateFilesAndStrings } from "@/shared/utils/separateFilesAndStrings";
+import { useUpdateDayByDayMutation } from "../../hooks/useDayByDay";
 
-const destinationSchema = z.object({
-  name: z.string().trim().min(1, { message: "O nome é obrigatório." }),
+const dayByDaySchema = z.object({
+  title: z.string().trim().min(1, { message: "O nome é obrigatório." }),
   description: z.string().trim().optional(),
   dateRange: z.object({
     from: z.date(),
@@ -38,16 +38,16 @@ const destinationSchema = z.object({
     .nullable(),
 });
 
-export type DestinationSchema = z.infer<typeof destinationSchema>;
+export type DestinationSchema = z.infer<typeof dayByDaySchema>;
 
 const DestinationImagesPlaceholder = () => <PiImages size={40} className="text-primary group-hover:text-primary/80" />;
 
 interface EditDestinationProps {
   defaultValues: DestinationSchema;
-  destinationId: string;
+  dayByDayId: string;
 }
 
-function EditDestination({ defaultValues, destinationId }: EditDestinationProps) {
+function EditDayByDay({ defaultValues, dayByDayId }: EditDestinationProps) {
   const [open, setOpen] = useState(false);
   const { proposal } = useSteppers();
   const queryClient = useQueryClient();
@@ -61,16 +61,16 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
     formState,
     trigger,
     reset,
-  } = useForm({ resolver: zodResolver(destinationSchema), defaultValues });
+  } = useForm({ resolver: zodResolver(dayByDaySchema), defaultValues });
 
-  const { updateDestination, isLoadingUpdateDestination } = useUpdateDestinationMutation({
+  const { updateDayByDay, isLoadingUpdateDayByDay } = useUpdateDayByDayMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
       reset(watch());
       setOpen(false);
-      toast("Destino editado com sucesso");
+      toast("Day by day editado com sucesso");
     },
-    onError: () => toast("Erro ao editar destino"),
+    onError: () => toast("Erro ao editar day by day"),
   });
 
   const isFormDirty = Object.keys(formState.dirtyFields).length > 0;
@@ -95,10 +95,10 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
   const onSubmit = (data: DestinationSchema) => {
     const { files, strings } = separateFilesAndStrings(data.images ?? []);
 
-    updateDestination({
-      id: destinationId,
+    updateDayByDay({
+      id: dayByDayId,
       data: {
-        name: data.name,
+        title: data.title,
         description: data.description,
         departureDate: data.dateRange.from.toISOString(),
         returnDate: data.dateRange.to.toISOString(),
@@ -118,7 +118,7 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
         <AlertDialogContent>
           <AlertDialogDescription />
           <AlertDialogHeader className="mb-3">
-            <AlertDialogTitle>Editar Destino</AlertDialogTitle>
+            <AlertDialogTitle>Editar Day by Day</AlertDialogTitle>
           </AlertDialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
             <div className="mb-5 flex flex-wrap gap-3">
@@ -142,8 +142,8 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
 
             <div>
               <label className="block text-sm font-medium">Nome</label>
-              <Input {...register("name")} placeholder="Digite o nome" />
-              {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
+              <Input {...register("title")} placeholder="Digite o nome" />
+              {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium">Descrição</label>
@@ -166,9 +166,9 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
               <Button
                 type="submit"
                 className="flex-1 [&_svg:not([class*='size-'])]:size-6"
-                disabled={!isFormDirty || isLoadingUpdateDestination}
+                disabled={!isFormDirty || isLoadingUpdateDayByDay}
               >
-                {isLoadingUpdateDestination ? <CgSpinner className="animate-spin" /> : "Salvar"}
+                {isLoadingUpdateDayByDay ? <CgSpinner className="animate-spin" /> : "Salvar"}
               </Button>
             </div>
           </form>
@@ -178,4 +178,4 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
   );
 }
 
-export default memo(EditDestination);
+export default memo(EditDayByDay);

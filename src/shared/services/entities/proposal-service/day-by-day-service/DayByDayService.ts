@@ -1,8 +1,8 @@
 import api from "@/shared/services/axios/api";
 import { ApiException } from "@/shared/services/api-exception/ApiException";
 
-export type CreateProposalDestinationRequest = {
-  name: string;
+export type CreateProposalDayByDayRequest = {
+  title: string;
   proposalId: string;
   description?: string;
   departureDate?: string;
@@ -10,8 +10,8 @@ export type CreateProposalDestinationRequest = {
   images?: File[];
 };
 
-export type UpdateProposalDestinationRequest = {
-  name: string;
+export type UpdateProposalDayByDayRequest = {
+  title: string;
   description?: string;
   departureDate?: string;
   returnDate?: string;
@@ -19,32 +19,32 @@ export type UpdateProposalDestinationRequest = {
   images?: File[];
 };
 
-const createProposalDestination = async (data: CreateProposalDestinationRequest): Promise<void> => {
+const createProposalDayByDay = async (data: CreateProposalDayByDayRequest): Promise<void> => {
   try {
     const formData = new FormData();
-    formData.append("name", data.name);
+    formData.append("title", data.title);
     formData.append("description", data.description || "");
     data.departureDate && formData.append("departureDate", data.departureDate);
     data.returnDate && formData.append("returnDate", data.returnDate);
     formData.append("proposalId", data.proposalId);
 
     if (data.images && data.images.length > 0) {
-      data.images.forEach((image, index) => {
+      data.images.forEach((image) => {
         formData.append("images", image);
       });
     }
 
-    await api.post("proposal-destination", formData);
+    await api.post("proposal-day-by-day", formData);
   } catch (error) {
     throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
   }
 };
 
-const updateProposalDestination = async (id: string, data: UpdateProposalDestinationRequest): Promise<void> => {
+const updateProposalDayByDay = async (id: string, data: UpdateProposalDayByDayRequest): Promise<void> => {
   try {
     const formData = new FormData();
 
-    formData.append("name", data.name);
+    formData.append("title", data.title);
 
     if (data.description) {
       formData.append("description", data.description);
@@ -70,22 +70,22 @@ const updateProposalDestination = async (id: string, data: UpdateProposalDestina
       });
     }
 
-    await api.patch(`proposal-destination/${id}`, formData);
+    await api.patch(`proposal-day-by-day/${id}`, formData);
   } catch (error) {
     throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
   }
 };
 
-const deleteProposalDestination = async (id: string): Promise<void> => {
+const deleteProposalDayByDay = async (id: string): Promise<void> => {
   try {
-    await api.delete(`proposal-destination/${id}`);
+    await api.delete(`proposal-day-by-day/${id}`);
   } catch (error) {
     throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
   }
 };
 
-export const DestinationService = {
-  createProposalDestination,
-  updateProposalDestination,
-  deleteProposalDestination,
+export const DayByDayService = {
+  createProposalDayByDay,
+  updateProposalDayByDay,
+  deleteProposalDayByDay,
 };

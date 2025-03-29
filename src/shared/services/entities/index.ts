@@ -6,3 +6,4 @@ export * from "./user-profile/UserProfileService";
 export * from "./proposal-service/ProposalService";
 export * from "./proposal-service/destination-service/DestinationService";
 export * from "./proposal-service/passenger-service/PassengerService";
+export * from "./proposal-service/day-by-day-service/DayByDayService";
