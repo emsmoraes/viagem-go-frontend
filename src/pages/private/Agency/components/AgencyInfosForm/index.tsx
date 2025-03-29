@@ -43,6 +43,8 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
     defaultValues,
   });
 
+  const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
+
   const onSubmit = (data: AgencySchema) => {
     updateAgency(data);
   };
@@ -159,7 +161,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
           </div>
 
           <div className="flex w-full justify-end">
-            <Button type="submit" className="h-[50px] px-5 text-[16px] font-[400]">
+            <Button type="submit" className="h-[50px] px-5 text-[16px] font-[400]" disabled={!isFormDirty || isLoadingUpdate}>
               {isLoadingUpdate ? <CgSpinner className="animate-spin" /> : "Salvar alterações"}
             </Button>
           </div>
