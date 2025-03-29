@@ -11,6 +11,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/shared/components/ui/dialog";
+import { cn } from "@/shared/lib/utils";
 
 interface SingleImageUploadProps {
   currentImage?: File | string | null;
@@ -19,6 +20,7 @@ interface SingleImageUploadProps {
   isPending?: boolean;
   errorMessage?: string;
   hiddenDelete?: boolean;
+  className?: string;
 }
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
@@ -28,6 +30,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   isPending = false,
   errorMessage,
   hiddenDelete = false,
+  className,
 }) => {
   const imageUrl =
     currentImage instanceof File
@@ -51,9 +54,13 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   return (
     <div className="flex flex-col items-center gap-2">
       {imageUrl ? (
-        <div className="relative h-40 w-40 rounded-full">
+        <div className="relative rounded-full">
           <label htmlFor="file-input" className="cursor-pointer">
-            <img src={imageUrl} alt="Preview" className="h-full w-full rounded-full object-cover shadow-md" />
+            <img
+              src={imageUrl}
+              alt="Preview"
+              className={cn("h-40 w-40 rounded-full object-cover shadow-md", className)}
+            />
           </label>
           <input
             id="file-input"
@@ -101,9 +108,13 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
       ) : (
         <label
           htmlFor="file-input"
-          className={`border-primary hover:border-primary/80 group flex h-40 w-40 cursor-pointer flex-col items-center justify-center rounded-full border-3 border-dashed ${
-            isPending ? "cursor-not-allowed opacity-50" : ""
-          }`}
+          className={cn(
+            "border-primary hover:border-primary/80 group flex h-40 w-40 cursor-pointer flex-col items-center justify-center rounded-full border-3 border-dashed",
+            className,
+            {
+              "cursor-not-allowed opacity-50": isPending,
+            },
+          )}
         >
           {ImagePickerPlaceholder ? (
             <ImagePickerPlaceholder />

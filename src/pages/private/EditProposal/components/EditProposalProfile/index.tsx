@@ -93,6 +93,7 @@ function EditProposalProfile({ defaultValues, proposalId }: EditProposalProfileP
             errorMessage={form.formState.errors.profileImage?.message}
             ImagePickerPlaceholder={UserAvatarPlaceholder}
             hiddenDelete={true}
+            className="min-h-[150px] min-w-[250px] rounded-lg"
           />
 
           <EditProposalInfosForm form={form} />
