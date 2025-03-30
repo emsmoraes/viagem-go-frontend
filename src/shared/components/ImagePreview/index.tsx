@@ -1,5 +1,5 @@
 import { cn } from "@/shared/lib/utils";
-import React, { memo } from "react";
+import { memo } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 
 interface ImagePreviewProps {

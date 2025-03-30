@@ -1,6 +1,7 @@
 import { DayByDay } from "./day-by-day.model";
 import { Destination } from "./destination.model";
 import { Passenger } from "./passenger.model";
+import { Ticket } from "./ticket.model";
 
 export interface Proposal {
   id: string;
@@ -13,6 +14,7 @@ export interface Proposal {
   passengers?: Passenger[];
   destinations?: Destination[];
   dayByDays?: DayByDay[];
+  tickets?: Ticket[];
   createdAt: string;
   updatedAt: string;
 }

@@ -24,7 +24,7 @@ export function EditProposal() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className={clsx("flex-1 overflow-y-auto pb-6")}>
+      <div className={clsx("flex flex-1 flex-col overflow-y-auto pb-6")}>
         <h1 className="mb-8 pt-3 text-xl font-medium">Editar proposta</h1>
 
         <EditProposalProfile

@@ -10,7 +10,8 @@ interface MultipleImageUploadProps {
   errorMessage?: string;
   inputClassName?: string;
   max?: number;
-  currentImagesLength: number;
+  currentFilesLength: number;
+  accept?: string;
 }
 
 const MultipleImageUpload: React.FC<MultipleImageUploadProps> = ({
@@ -20,16 +21,17 @@ const MultipleImageUpload: React.FC<MultipleImageUploadProps> = ({
   errorMessage,
   inputClassName,
   max,
-  currentImagesLength,
+  currentFilesLength,
+  accept = "image/*",
 }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isPending) return;
 
     const files = event.target.files ? Array.from(event.target.files) : [];
 
-    if (max && currentImagesLength + files.length > max) {
-      const allowedFiles = files.slice(0, max - currentImagesLength);
-      toast("Limite de imagens atingido.");
+    if (max && currentFilesLength + files.length > max) {
+      const allowedFiles = files.slice(0, max - currentFilesLength);
+      toast("Limite de arquivos atingido.");
       onChange(allowedFiles);
     } else {
       onChange(files);
@@ -61,7 +63,7 @@ const MultipleImageUpload: React.FC<MultipleImageUploadProps> = ({
           id={id}
           type="file"
           multiple
-          accept="image/*"
+          accept={accept}
           className="hidden"
           onChange={handleFileChange}
           disabled={isPending}

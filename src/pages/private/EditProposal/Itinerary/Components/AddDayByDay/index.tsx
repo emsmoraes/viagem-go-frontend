@@ -115,7 +115,7 @@ function AddDayByDay() {
                 inputClassName="w-16 h-16 rounded-md"
                 ImagePickerPlaceholder={DestinationImagesPlaceholder}
                 onChange={handleImageChange}
-                currentImagesLength={images.length}
+                currentFilesLength={images.length}
                 max={5}
               />
               {images.map((image, index) => (

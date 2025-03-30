@@ -39,7 +39,7 @@ function PassengersAccordion() {
             <Input
               onChange={(e) => onInputWithDebouncing(e.target.value)}
               className="w-full md:max-w-[500px]"
-              placeholder="Buscar usuário"
+              placeholder="Buscar passageiro"
             />
             <AddPassenger />
           </div>
