@@ -46,7 +46,7 @@ export default function SearchProposals({ defaultValues }: SearchProposalsProps)
                 <div className="relative">
                   <Input
                     {...field}
-                    placeholder="Pesquisar destinos"
+                    placeholder="Pesquisar propostas"
                     className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                   />
                   <Button
