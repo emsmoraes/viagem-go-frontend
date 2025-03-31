@@ -6,7 +6,7 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import AddFlightForm from "../AddFlightForm";
 
 function AddFlight() {
-  const [openNewFlight, setOpenNewFlight] = useState(true);
+  const [openNewFlight, setOpenNewFlight] = useState(false);
 
   return (
     <>

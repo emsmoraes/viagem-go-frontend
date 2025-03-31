@@ -2,9 +2,9 @@ export interface Ticket {
   id: string;
   origin: string;
   destination: string;
-  type: string;
+  type: "OUTBOUND" | "INBOUND" | "INTERNAL";
   baggagePerPerson: number | null;
-  duration: number | null;
+  duration: string | null;
   price: string;
   imageUrls: string[];
   fileUrls: string[];

@@ -6,6 +6,7 @@ import EditProposalProfile from "./components/EditProposalProfile";
 import { useGetProposal } from "./hooks/useEditProposal";
 import StagesNav from "./components/StagesNav";
 import { useSteppers } from "./contexts/SteppersContext/useSteppers";
+import { ScrollArea } from "@/shared/components/ui/scroll-area";
 
 export function EditProposal() {
   const { isErrorProposal, isLoadingProposal, proposal } = useSteppers();
@@ -23,8 +24,8 @@ export function EditProposal() {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className={clsx("flex flex-1 flex-col overflow-y-auto pb-6")}>
+    <div className="flex h-full flex-col overflow-hidden">
+      <ScrollArea className="flex h-full flex-col">
         <h1 className="mb-8 pt-3 text-xl font-medium">Editar proposta</h1>
 
         <EditProposalProfile
@@ -44,8 +45,10 @@ export function EditProposal() {
           <StagesNav proposalId={proposal.id} />
         </div>
 
-        <Outlet />
-      </div>
+        <div className="w-full pb-6">
+          <Outlet />
+        </div>
+      </ScrollArea>
     </div>
   );
 }

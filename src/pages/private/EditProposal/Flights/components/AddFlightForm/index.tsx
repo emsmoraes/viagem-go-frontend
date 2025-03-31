@@ -170,7 +170,7 @@ function AddFlightForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="origin"
@@ -262,22 +262,6 @@ function AddFlightForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
 
           <FormField
             control={form.control}
-            name="arrivalAt"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Chegada em</FormLabel>
-                <DatePickerInput
-                  value={field.value ? new Date(field.value) : undefined}
-                  onChange={(date) => field.onChange(date)}
-                  placeholder="Data e hora de chegada"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="departureAt"
             render={({ field }) => (
               <FormItem>
@@ -286,6 +270,22 @@ function AddFlightForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
                   value={field.value ? new Date(field.value) : undefined}
                   onChange={(date) => field.onChange(date)}
                   placeholder="Data e hora de partida"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="arrivalAt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Chegada em</FormLabel>
+                <DatePickerInput
+                  value={field.value ? new Date(field.value) : undefined}
+                  onChange={(date) => field.onChange(date)}
+                  placeholder="Data e hora de chegada"
                 />
                 <FormMessage />
               </FormItem>

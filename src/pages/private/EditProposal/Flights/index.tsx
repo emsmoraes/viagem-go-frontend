@@ -1,36 +1,74 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
+import { useState } from "react";
 import AddFlight from "./components/AddFlight";
 import { useSteppers } from "../contexts/SteppersContext/useSteppers";
-import { useState } from "react";
+import FlightItem from "./components/FlightItem";
+import { Ticket } from "@/shared/models/ticket.model";
 
 export function Flights() {
   const { proposal } = useSteppers();
+  const tickets = proposal?.tickets || [];
 
-  const tickets = proposal?.tickets;
+  const [activeFilter, setActiveFilter] = useState<Ticket["type"] | "ALL">("ALL");
+
+  const filterTickets = (ticket: Ticket) => {
+    if (activeFilter === "ALL") return true;
+    return ticket.type === activeFilter;
+  };
+
+  const filteredTickets = tickets.filter(filterTickets);
+
+  const filters = [
+    { label: "Todos", value: "ALL" },
+    { label: "Ida", value: "OUTBOUND" },
+    { label: "Volta", value: "INBOUND" },
+    { label: "Interna", value: "INTERNAL" },
+  ] as const;
 
   return (
-    <div className="space-y-3 lg:pr-6">
+    <div className="max-h-full space-y-3 lg:pr-6">
       <AddFlight />
 
-      <Tabs defaultValue="OUTBOUND">
-        <TabsList className="py-1">
-          <TabsTrigger className="py-4" value="OUTBOUND">
-            Voos de ida
-          </TabsTrigger>
-          <TabsTrigger className="py-4" value="INBOUND">
-            Voos de volta
-          </TabsTrigger>
-          <TabsTrigger className="py-4" value="INTERNAL">
-            Voos de internos
-          </TabsTrigger>
-        </TabsList>
+      <div className="mt-2 flex gap-2">
+        {filters.map(({ label, value }) => (
+          <button
+            key={value}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              activeFilter === value ? "bg-primary text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+            onClick={() => setActiveFilter(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
-        <div className="mt-4 space-y-4 lg:pr-6">
-          <TabsContent value="OUTBOUND">{tickets?.map((ticket) => <p>{ticket.origin}</p>)}</TabsContent>
-          <TabsContent value="INBOUND">Change your password here.</TabsContent>
-          <TabsContent value="INTERNAL">Change your password here.</TabsContent>
+      <div className="mt-4 space-y-4 lg:pr-6">
+        <div className="space-y-3">
+          {filteredTickets.length > 0 ? (
+            filteredTickets.map((ticket) => (
+              <FlightItem
+                key={ticket.id}
+                defaultValues={{
+                  destination: ticket.destination,
+                  origin: ticket.origin,
+                  type: ticket.type,
+                  arrivalAt: new Date(ticket.arrivalAt),
+                  departureAt: new Date(ticket.departureAt),
+                  baggagePerPerson: ticket.baggagePerPerson || undefined,
+                  duration: ticket.duration || undefined,
+                  files: ticket.fileUrls,
+                  images: ticket.imageUrls,
+                  observation: ticket.observation || undefined,
+                  price: Number(ticket.price),
+                }}
+                flight={ticket}
+              />
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Nenhum voo encontrado.</p>
+          )}
         </div>
-      </Tabs>
+      </div>
     </div>
   );
 }
