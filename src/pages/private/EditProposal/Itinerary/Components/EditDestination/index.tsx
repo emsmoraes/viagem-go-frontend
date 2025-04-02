@@ -68,7 +68,7 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
       reset(watch());
       setOpen(false);
-      toast("Destino editado com sucesso");
+      toast("Destino editado com sucesso. Alterações salvas!");
     },
     onError: () => toast("Erro ao editar destino"),
   });

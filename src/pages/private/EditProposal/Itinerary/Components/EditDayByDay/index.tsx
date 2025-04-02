@@ -68,7 +68,7 @@ function EditDayByDay({ defaultValues, dayByDayId }: EditDestinationProps) {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
       reset(watch());
       setOpen(false);
-      toast("Day by day editado com sucesso");
+      toast("Day by day editado com sucesso. Alterações salvas!");
     },
     onError: () => toast("Erro ao editar day by day"),
   });

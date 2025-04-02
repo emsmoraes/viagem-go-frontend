@@ -67,7 +67,7 @@ function AddDayByDay() {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
       setOpen(false);
       reset();
-      toast("Day by day adicionado com sucesso");
+      toast("Day by day adicionado com sucesso. Alterações salvas!");
     },
     onError: () => toast("Erro ao criar day by day"),
   });

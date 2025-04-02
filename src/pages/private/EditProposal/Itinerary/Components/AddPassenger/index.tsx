@@ -16,7 +16,7 @@ function AddPassenger() {
   const { createPassenger, isLoadingCreatePassenger } = useCreatePassengerMutation({
     onSuccess: () => {
       setName("");
-      toast("Passageiro criado com sucesso!");
+      toast("Passageiro criado com sucesso. Alterações salvas!");
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
     },
     onError: (error: any) => {

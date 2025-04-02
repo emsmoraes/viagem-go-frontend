@@ -54,7 +54,7 @@ function AddFlightForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
       origin: "",
       destination: "",
       type: undefined,
-      baggagePerPerson: undefined,
+      baggagePerPerson: 0,
       duration: "",
       price: 0,
       arrivalAt: undefined,

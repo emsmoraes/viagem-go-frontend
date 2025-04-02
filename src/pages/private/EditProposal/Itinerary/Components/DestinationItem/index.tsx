@@ -25,7 +25,7 @@ function DestinationItem({
   const { deleteDestination, isLoadingDeleteDestination } = useDeleteDestinationMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
-      toast("Destino excluído com sucesso");
+      toast("Destino excluído com sucesso. Alterações salvas!");
     },
     onError: () => {
       toast("Erro ao excluir destino");

@@ -68,7 +68,7 @@ function AddDestination() {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
       setOpen(false);
       reset();
-      toast("Destino adicionado com sucesso");
+      toast("Destino adicionado com sucesso. Alterações salvas!");
     },
     onError: () => toast("Erro ao criar destino"),
   });
