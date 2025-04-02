@@ -20,6 +20,10 @@ import { CgSpinner } from "react-icons/cg";
 import { Separator } from "@/shared/components/ui/separator";
 import { FiEdit2 } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi";
+import { useDeleteFlightMutation } from "../../hooks/useFlights";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
 
 const flightSchema = z.object({
   origin: z.string().trim().min(1, { message: "Origem é obrigatória." }),
@@ -59,6 +63,18 @@ const DestinationImagesPlaceholder = () => <PiImages size={40} className="text-p
 const DestinationFilesPlaceholder = () => <PiFiles size={40} className="text-primary group-hover:text-primary/80" />;
 
 function FlightItem({ flight, defaultValues }: FlightItemProps) {
+  const queryClient = useQueryClient();
+  const { proposal } = useSteppers();
+
+  const { deleteFlight, isLoadingDeleteFlight } = useDeleteFlightMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
+      toast("Destino excluído com sucesso. Alterações salvas!");
+    },
+    onError: () => {
+      toast("Erro ao excluir destino");
+    },
+  });
   const form = useForm({
     resolver: zodResolver(flightSchema),
     defaultValues,
@@ -97,6 +113,11 @@ function FlightItem({ flight, defaultValues }: FlightItemProps) {
     console.log(values);
   };
 
+  const handleDelete = () => {
+    if (!proposal) return;
+    deleteFlight({ proposalId: proposal.id, ticketId: flight.id });
+  };
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="rounded-xl bg-white p-4 shadow-md">
@@ -118,8 +139,16 @@ function FlightItem({ flight, defaultValues }: FlightItemProps) {
             <Button size={"icon"}>
               <FiEdit2 />
             </Button>
-            <Button onClick={(e) => e.stopPropagation()} size={"icon"} variant={"destructive"}>
-              <HiOutlineTrash />
+            <Button
+              disabled={isLoadingDeleteFlight}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
+              size={"icon"}
+              variant={"destructive"}
+            >
+              {isLoadingDeleteFlight ? <CgSpinner className="animate-spin" /> : <HiOutlineTrash />}
             </Button>
           </div>
         </AccordionTrigger>
