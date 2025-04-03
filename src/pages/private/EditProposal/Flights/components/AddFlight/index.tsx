@@ -11,8 +11,8 @@ function AddFlight() {
   return (
     <>
       {!openNewFlight ? (
-        <Button onClick={() => setOpenNewFlight(true)} className="[&_svg:not([class*='size-'])]:size-6" size={"icon"}>
-          <IoIosAddCircleOutline />
+        <Button onClick={() => setOpenNewFlight(true)} className="[&_svg:not([class*='size-'])]:size-6">
+          <IoIosAddCircleOutline /> Novo destino
         </Button>
       ) : (
         <Card className="w-full p-0">

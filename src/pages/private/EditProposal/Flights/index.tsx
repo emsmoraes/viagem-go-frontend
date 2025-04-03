@@ -32,8 +32,10 @@ export function Flights() {
         {filters.map(({ label, value }) => (
           <button
             key={value}
-            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
-              activeFilter === value ? "bg-primary text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            className={`rounded-md border px-4 py-2 text-sm font-medium transition ${
+              activeFilter === value
+                ? "bg-primary/15 text-primary border-primary"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
             onClick={() => setActiveFilter(value)}
           >
@@ -52,9 +54,9 @@ export function Flights() {
                   destination: ticket.destination,
                   origin: ticket.origin,
                   type: ticket.type,
-                  arrivalAt: ticket.arrivalAt && new Date(ticket.arrivalAt) || undefined,
-                  departureAt: ticket.departureAt && new Date(ticket.departureAt) || undefined,
-                  baggagePerPerson: ticket.baggagePerPerson || undefined,
+                  arrivalAt: (ticket.arrivalAt && new Date(ticket.arrivalAt)) || undefined,
+                  departureAt: (ticket.departureAt && new Date(ticket.departureAt)) || undefined,
+                  baggagePerPerson: ticket.baggagePerPerson || 0,
                   duration: ticket.duration || undefined,
                   files: ticket.fileUrls,
                   images: ticket.imageUrls,
