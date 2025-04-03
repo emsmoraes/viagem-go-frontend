@@ -52,13 +52,13 @@ export function Flights() {
                   destination: ticket.destination,
                   origin: ticket.origin,
                   type: ticket.type,
-                  arrivalAt: new Date(ticket.arrivalAt),
-                  departureAt: new Date(ticket.departureAt),
+                  arrivalAt: ticket.arrivalAt && new Date(ticket.arrivalAt) || undefined,
+                  departureAt: ticket.departureAt && new Date(ticket.departureAt) || undefined,
                   baggagePerPerson: ticket.baggagePerPerson || undefined,
                   duration: ticket.duration || undefined,
                   files: ticket.fileUrls,
                   images: ticket.imageUrls,
-                  observation: ticket.observation || undefined,
+                  observation: ticket.observation || "",
                   price: Number(ticket.price),
                 }}
                 flight={ticket}

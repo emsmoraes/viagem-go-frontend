@@ -139,7 +139,7 @@ const updateFlight = async (ticketId: string, proposalId: string, data: UpdateFl
       });
     }
 
-    await api.put(`tickets/${ticketId}/proposal/${proposalId}`, formData);
+    await api.patch(`tickets/${ticketId}/proposal/${proposalId}`, formData);
   } catch (error) {
     throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
   }
