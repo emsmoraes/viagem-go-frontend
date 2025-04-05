@@ -23,6 +23,7 @@ import { PiImages } from "react-icons/pi";
 import { toast } from "sonner";
 import { separateFilesAndStrings } from "@/shared/utils/separateFilesAndStrings";
 import { useUpdateDayByDayMutation } from "../../hooks/useDayByDay";
+import { Textarea } from "@/shared/components/ui/textarea";
 
 const dayByDaySchema = z.object({
   title: z.string().trim().min(1, { message: "O nome é obrigatório." }),
@@ -147,7 +148,7 @@ function EditDayByDay({ defaultValues, dayByDayId }: EditDestinationProps) {
             </div>
             <div>
               <label className="block text-sm font-medium">Descrição</label>
-              <Input {...register("description")} placeholder="Digite a descrição" />
+              <Textarea {...register("description")} placeholder="Digite a descrição" />
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium">Período</label>

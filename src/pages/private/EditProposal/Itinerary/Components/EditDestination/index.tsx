@@ -23,6 +23,7 @@ import { PiImages } from "react-icons/pi";
 import { toast } from "sonner";
 import { useCreateDestinationMutation, useUpdateDestinationMutation } from "../../hooks/useDestination";
 import { separateFilesAndStrings } from "@/shared/utils/separateFilesAndStrings";
+import { Textarea } from "@/shared/components/ui/textarea";
 
 const destinationSchema = z.object({
   name: z.string().trim().min(1, { message: "O nome é obrigatório." }),
@@ -147,7 +148,7 @@ function EditDestination({ defaultValues, destinationId }: EditDestinationProps)
             </div>
             <div>
               <label className="block text-sm font-medium">Descrição</label>
-              <Input {...register("description")} placeholder="Digite a descrição" />
+              <Textarea {...register("description")} placeholder="Digite a descrição" />
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium">Período</label>

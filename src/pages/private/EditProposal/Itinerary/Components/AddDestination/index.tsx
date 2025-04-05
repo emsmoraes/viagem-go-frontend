@@ -23,6 +23,7 @@ import { CgSpinner } from "react-icons/cg";
 import { toast } from "sonner";
 import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
 import { useQueryClient } from "@tanstack/react-query";
+import { Textarea } from "@/shared/components/ui/textarea";
 
 export interface DateRange {
   from: Date;
@@ -137,7 +138,7 @@ function AddDestination() {
             </div>
             <div>
               <label className="block text-sm font-medium">Descrição</label>
-              <Input {...register("description")} placeholder="Digite a descrição" />
+              <Textarea {...register("description")} placeholder="Digite a descrição" />
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium">Período</label>
