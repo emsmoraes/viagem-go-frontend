@@ -1,21 +1,9 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/components/ui/accordion";
 import { Ticket } from "@/shared/models/ticket.model";
-import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
 import { useForm } from "react-hook-form";
 import { MdFlight } from "react-icons/md";
-import { PiFiles, PiImages } from "react-icons/pi";
-import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
-import ImagePreview from "@/shared/components/ImagePreview";
-import FilePreview from "@/shared/components/FilePreview";
-import MoneyInput from "@/shared/components/Form/MoneyInput";
-import { DatePickerInput } from "@/shared/components/Form/DatePickerInput";
-import { Textarea } from "@/shared/components/ui/textarea";
 import { CgSpinner } from "react-icons/cg";
 import { Separator } from "@/shared/components/ui/separator";
 import { FiEdit2 } from "react-icons/fi";
@@ -61,8 +49,7 @@ function FlightItem({ flight, defaultValues }: FlightItemProps) {
 
             {flight.departureAt && (
               <span className="mt-3 mb-1 flex items-center gap-3 text-sm text-gray-600">
-                Em: {moment(flight.departureAt).format("DD/MM/YYYY")} -{" "}
-                {moment(flight.arrivalAt).format("DD/MM/YYYY")}
+                Em: {moment(flight.departureAt).format("DD/MM/YYYY")} - {moment(flight.arrivalAt).format("DD/MM/YYYY")}
               </span>
             )}
             {flight.duration && <span className="text-sm text-gray-600">Duração: {flight.duration} hrs</span>}
@@ -86,7 +73,7 @@ function FlightItem({ flight, defaultValues }: FlightItemProps) {
         </AccordionTrigger>
         <AccordionContent>
           <Separator className="my-6" />
-          <EditFlightForm defaultValues={defaultValues} ticketId={flight.id}/>
+          <EditFlightForm defaultValues={defaultValues} ticketId={flight.id} />
         </AccordionContent>
       </AccordionItem>
     </Accordion>

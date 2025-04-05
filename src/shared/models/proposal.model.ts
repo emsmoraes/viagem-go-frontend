@@ -1,3 +1,4 @@
+import { Accommodation } from "./accommodation.model";
 import { DayByDay } from "./day-by-day.model";
 import { Destination } from "./destination.model";
 import { Passenger } from "./passenger.model";
@@ -15,6 +16,7 @@ export interface Proposal {
   destinations?: Destination[];
   dayByDays?: DayByDay[];
   tickets?: Ticket[];
+  accommodations?: Accommodation[];
   createdAt: string;
   updatedAt: string;
 }

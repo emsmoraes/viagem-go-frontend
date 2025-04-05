@@ -10,8 +10,8 @@ export interface Accommodation {
   roomType: string;
   description: string;
   price: number;
-  imageUrls: string[];
-  pdfUrls: string[];
+  images: string[];
+  files: string[];
   proposalId: string;
   createdAt: string;
   updatedAt: string;

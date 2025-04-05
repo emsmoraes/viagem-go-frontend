@@ -11,12 +11,13 @@ import { PiFiles, PiImages } from "react-icons/pi";
 import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
 import ImagePreview from "@/shared/components/ImagePreview";
 import FilePreview from "@/shared/components/FilePreview";
-import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
 import { useQueryClient } from "@tanstack/react-query";
 import { CgSpinner } from "react-icons/cg";
 import { toast } from "sonner";
-import { useCreateAccommodationMutation } from "../../hooks/useAccomodations";
-import { CreateAccommodationRequest } from "@/shared/services/entities";
+import { useUpdateAccommodationMutation } from "../../hooks/useAccomodations";
+import { UpdateAccommodationRequest } from "@/shared/services/entities";
+import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
+import { separateFilesAndStrings } from "@/shared/utils/separateFilesAndStrings";
 
 const accommodationSchema = z.object({
   name: z.string().trim().min(1, { message: "Nome é obrigatório." }),
@@ -29,90 +30,102 @@ const accommodationSchema = z.object({
   roomType: z.string().optional(),
   description: z.string().optional(),
   price: z.number().min(0).optional(),
-  images: z.instanceof(File).array().optional().nullable(),
-  files: z.instanceof(File).array().optional().nullable(),
+  images: z
+    .array(z.union([z.instanceof(File), z.string()]))
+    .optional()
+    .nullable(),
+  files: z
+    .array(z.union([z.instanceof(File), z.string()]))
+    .optional()
+    .nullable(),
 });
 
-export type AccommodationSchema = z.infer<typeof accommodationSchema>;
+export type EditAccommodationSchema = z.infer<typeof accommodationSchema>;
 
 const AccommodationImagesPlaceholder = () => (
   <PiImages size={40} className="text-primary group-hover:text-primary/80" />
 );
 const AccommodationFilesPlaceholder = () => <PiFiles size={40} className="text-primary group-hover:text-primary/80" />;
 
-function AddAccommodationForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+type EditAccommodationFormProps = {
+  defaultValues: EditAccommodationSchema;
+  accommodationId: string;
+};
+
+function EditAccommodationForm({ defaultValues, accommodationId }: EditAccommodationFormProps) {
   const { proposal } = useSteppers();
   const queryClient = useQueryClient();
 
-  const { createAccommodation, isLoadingCreateAccommodation } = useCreateAccommodationMutation({
+  const { updateAccommodation, isLoadingUpdateAccommodation } = useUpdateAccommodationMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["proposal", proposal?.id] });
-      form.reset();
-      setOpen(false);
-      toast("hospedagem criada com sucesso. Alterações salvas!");
+      form.reset(form.watch());
+      toast("Hospedagem atualizada com sucesso!");
     },
     onError: () => {
-      toast("Erro ao criar hospedagem");
+      toast("Erro ao atualizar hospedagem");
     },
   });
 
-  const form = useForm({
+  const form = useForm<EditAccommodationSchema>({
     resolver: zodResolver(accommodationSchema),
-    defaultValues: {
-      name: "",
-      location: "",
-      address: "",
-      checkIn: "",
-      checkOut: "",
-      category: "",
-      boardType: "",
-      roomType: "",
-      description: "",
-      price: 0,
-      images: null,
-      files: null,
-    },
+    defaultValues,
   });
+
+  const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
 
   const images = form.watch("images") ?? [];
   const files = form.watch("files") ?? [];
 
   const handleImageChange = (newFiles: File[] | null) => {
+    form.trigger();
     if (newFiles) {
       const filesArray = Array.from(newFiles);
-      form.setValue("images", [...(images || []), ...filesArray]);
+      form.setValue("images", [...(images || []), ...filesArray], { shouldDirty: true });
     }
   };
 
   const handleFilesChange = (newFiles: File[] | null) => {
     if (newFiles) {
+      form.trigger();
       const filesArray = Array.from(newFiles);
-      form.setValue("files", [...(files || []), ...filesArray]);
+      form.setValue("files", [...(files || []), ...filesArray], { shouldDirty: true });
     }
   };
 
   const handleImageDelete = (index: number) => {
+    form.trigger();
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
-    form.setValue("images", updatedImages);
+    form.setValue("images", updatedImages, { shouldDirty: true });
   };
 
   const handleFileDelete = (index: number) => {
+    form.trigger();
     const updatedFiles = [...files];
     updatedFiles.splice(index, 1);
-    form.setValue("files", updatedFiles);
+    form.setValue("files", updatedFiles, { shouldDirty: true });
   };
 
-  const onSubmit = (values: AccommodationSchema) => {
-    if (!proposal) return;
-    const formData: CreateAccommodationRequest = {
+  const onSubmit = (values: EditAccommodationSchema) => {
+    if (!proposal || !accommodationId) return;
+
+    const { files: imageFiles, strings: imageStrings } = separateFilesAndStrings(values.images ?? []);
+    const { files, strings } = separateFilesAndStrings(values.files ?? []);
+
+    const formData: UpdateAccommodationRequest = {
       ...values,
-      images,
-      files,
-      proposalId: proposal.id,
+      imageUrls: imageStrings,
+      fileUrls: strings,
+      images: imageFiles,
+      files: files,
     };
 
-    createAccommodation(formData);
+    updateAccommodation({
+      accommodationId,
+      proposalId: proposal.id,
+      data: formData,
+    });
   };
 
   return (
@@ -308,13 +321,13 @@ function AddAccommodationForm({ setOpen }: { setOpen: React.Dispatch<React.SetSt
         <Button
           type="submit"
           className="flex-1 [&_svg:not([class*='size-'])]:size-6"
-          disabled={isLoadingCreateAccommodation}
+          disabled={!isFormDirty || isLoadingUpdateAccommodation}
         >
-          {isLoadingCreateAccommodation ? <CgSpinner className="animate-spin" /> : "Salvar"}
+          {isLoadingUpdateAccommodation ? <CgSpinner className="animate-spin" /> : "Atualizar"}
         </Button>
       </form>
     </Form>
   );
 }
 
-export default AddAccommodationForm;
+export default EditAccommodationForm;
