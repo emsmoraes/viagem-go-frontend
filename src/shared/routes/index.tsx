@@ -82,6 +82,12 @@ const TransportsRouter = lazy(() =>
   })),
 );
 
+const ExperiencesRouter = lazy(() =>
+  import("@/pages/private/EditProposal/Experiences").then((module) => ({
+    default: module.Experiences,
+  })),
+);
+
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
@@ -162,7 +168,7 @@ export function Router(): ReactElement {
                 <Route path="accommodations" element={<AccommodationsRouter />} />
                 <Route path="cruise" element={<CruisesRouter />} />
                 <Route path="transport" element={<TransportsRouter />} />
-                <Route path="experiences" element={<h2>Experiências</h2>} />
+                <Route path="experiences" element={<ExperiencesRouter />} />
                 <Route path="insurance" element={<h2>Seguros</h2>} />
                 <Route path="extras" element={<h2>Extras</h2>} />
                 <Route path="summary" element={<h2>Resumo</h2>} />

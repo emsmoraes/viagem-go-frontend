@@ -2,6 +2,7 @@ import { Accommodation } from "./accommodation.model";
 import { Cruise } from "./cruise.model";
 import { DayByDay } from "./day-by-day.model";
 import { Destination } from "./destination.model";
+import { Experience } from "./experience.model";
 import { Passenger } from "./passenger.model";
 import { Ticket } from "./ticket.model";
 import { Transport } from "./transport.model";
@@ -21,6 +22,7 @@ export interface Proposal {
   accommodations?: Accommodation[];
   cruises?: Cruise[];
   transports?: Transport[];
+  experiences?: Experience[];
   createdAt: string;
   updatedAt: string;
 }
