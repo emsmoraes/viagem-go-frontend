@@ -10,3 +10,4 @@ export * from "./proposal-service/day-by-day-service/DayByDayService";
 export * from "./proposal-service/flights-service/FlightsService";
 export * from "./proposal-service/accommodations-service/AccommodationsService";
 export * from "./proposal-service/cruises-service/CruisesService";
+export * from "./proposal-service/transport-service/TransportsService";

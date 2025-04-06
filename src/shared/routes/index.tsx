@@ -70,9 +70,15 @@ const AccommodationsRouter = lazy(() =>
   })),
 );
 
-const Cruises = lazy(() =>
+const CruisesRouter = lazy(() =>
   import("@/pages/private/EditProposal/Cruises").then((module) => ({
     default: module.Cruises,
+  })),
+);
+
+const TransportsRouter = lazy(() =>
+  import("@/pages/private/EditProposal/Transports").then((module) => ({
+    default: module.Transports,
   })),
 );
 
@@ -154,8 +160,8 @@ export function Router(): ReactElement {
                 <Route path="itinerary" element={<ItineraryRouter />} />
                 <Route path="flights" element={<FlightsRouter />} />
                 <Route path="accommodations" element={<AccommodationsRouter />} />
-                <Route path="cruise" element={<Cruises />} />
-                <Route path="transport" element={<h2>Transporte</h2>} />
+                <Route path="cruise" element={<CruisesRouter />} />
+                <Route path="transport" element={<TransportsRouter />} />
                 <Route path="experiences" element={<h2>Experiências</h2>} />
                 <Route path="insurance" element={<h2>Seguros</h2>} />
                 <Route path="extras" element={<h2>Extras</h2>} />

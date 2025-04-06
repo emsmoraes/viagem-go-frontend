@@ -79,14 +79,14 @@ function CruiseItem({ cruise }: CruiseItemProps) {
             cruiseId={cruise.id}
             defaultValues={{
               name: cruise.name,
-              cabin: cruise.cabin,
-              checkIn: cruise.checkIn,
-              checkOut: cruise.checkOut,
-              description: cruise.description,
+              cabin: cruise.cabin || "",
+              checkIn: cruise.checkIn || "",
+              checkOut: cruise.checkOut || "",
+              description: cruise.description || "",
               files: cruise.files,
               images: cruise.images,
-              paymentMethods: cruise.paymentMethods,
-              route: cruise.route,
+              paymentMethods: cruise.paymentMethods || "",
+              route: cruise.route || "",
             }}
           />
         </AccordionContent>

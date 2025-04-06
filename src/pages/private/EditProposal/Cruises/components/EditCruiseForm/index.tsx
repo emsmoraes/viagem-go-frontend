@@ -1,12 +1,9 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/shared/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
-import MoneyInput from "@/shared/components/Form/MoneyInput";
 import { DatePickerInput } from "@/shared/components/Form/DatePickerInput";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { PiFiles, PiImages } from "react-icons/pi";
