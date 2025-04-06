@@ -3,22 +3,22 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { useState } from "react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import AddExperienceForm from "../AddExperienceForm";
+import AddInsuranceForm from "../AddInsuranceForm";
 
-function AddExperience() {
-  const [openNewExperience, setOpenNewExperience] = useState(false);
+function AddInsurance() {
+  const [openNewInsurance, setOpenNewInsurance] = useState(false);
 
   return (
     <>
-      {!openNewExperience ? (
-        <Button onClick={() => setOpenNewExperience(true)} className="[&_svg:not([class*='size-'])]:size-6">
-          <IoIosAddCircleOutline /> Nova experiência
+      {!openNewInsurance ? (
+        <Button onClick={() => setOpenNewInsurance(true)} className="[&_svg:not([class*='size-'])]:size-6">
+          <IoIosAddCircleOutline /> Novo seguro
         </Button>
       ) : (
         <Card className="w-full p-0">
           <CardContent className="w-full p-0">
             <Button
-              onClick={() => setOpenNewExperience(false)}
+              onClick={() => setOpenNewInsurance(false)}
               className="[&_svg:not([class*='size-'])]:size-6"
               size={"icon"}
             >
@@ -26,8 +26,8 @@ function AddExperience() {
             </Button>
 
             <div className="p-6">
-              <h2 className="mb-4 text-lg font-semibold">Adicionar experiência</h2>
-              <AddExperienceForm setOpen={setOpenNewExperience} />
+              <h2 className="mb-4 text-lg font-semibold">Adicionar seguro</h2>
+              <AddInsuranceForm setOpen={setOpenNewInsurance} />
             </div>
           </CardContent>
         </Card>
@@ -36,4 +36,4 @@ function AddExperience() {
   );
 }
 
-export default AddExperience;
+export default AddInsurance;

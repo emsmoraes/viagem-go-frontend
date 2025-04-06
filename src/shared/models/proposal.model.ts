@@ -3,6 +3,7 @@ import { Cruise } from "./cruise.model";
 import { DayByDay } from "./day-by-day.model";
 import { Destination } from "./destination.model";
 import { Experience } from "./experience.model";
+import { Insurance } from "./insurance.model";
 import { Passenger } from "./passenger.model";
 import { Ticket } from "./ticket.model";
 import { Transport } from "./transport.model";
@@ -23,6 +24,7 @@ export interface Proposal {
   cruises?: Cruise[];
   transports?: Transport[];
   experiences?: Experience[];
+  insurances?: Insurance[];
   createdAt: string;
   updatedAt: string;
 }

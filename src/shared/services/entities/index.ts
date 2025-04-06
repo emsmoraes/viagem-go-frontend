@@ -12,3 +12,4 @@ export * from "./proposal-service/accommodations-service/AccommodationsService";
 export * from "./proposal-service/cruises-service/CruisesService";
 export * from "./proposal-service/transport-service/TransportsService";
 export * from "./proposal-service/experience-service/ExperienceService";
+export * from "./proposal-service/insurance-service/InsuranceService";
