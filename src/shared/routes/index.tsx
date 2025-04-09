@@ -94,6 +94,12 @@ const InsurancesRouter = lazy(() =>
   })),
 );
 
+const ExtrasRouter = lazy(() =>
+  import("@/pages/private/EditProposal/Extras").then((module) => ({
+    default: module.Extras,
+  })),
+);
+
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
@@ -176,7 +182,7 @@ export function Router(): ReactElement {
                 <Route path="transport" element={<TransportsRouter />} />
                 <Route path="experiences" element={<ExperiencesRouter />} />
                 <Route path="insurance" element={<InsurancesRouter />} />
-                <Route path="extras" element={<h2>Extras</h2>} />
+                <Route path="extras" element={<ExtrasRouter />} />
                 <Route path="summary" element={<h2>Resumo</h2>} />
               </Route>
             </Route>
