@@ -6,6 +6,7 @@ import { Experience } from "./experience.model";
 import { Extra } from "./extra.model";
 import { Insurance } from "./insurance.model";
 import { Passenger } from "./passenger.model";
+import { Summary } from "./summary";
 import { Ticket } from "./ticket.model";
 import { Transport } from "./transport.model";
 
@@ -27,6 +28,7 @@ export interface Proposal {
   experiences?: Experience[];
   insurances?: Insurance[];
   extras?: Extra[];
+  summary?: Summary[];
   createdAt: string;
   updatedAt: string;
 }

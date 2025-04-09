@@ -14,3 +14,4 @@ export * from "./proposal-service/transport-service/TransportsService";
 export * from "./proposal-service/experience-service/ExperienceService";
 export * from "./proposal-service/insurance-service/InsuranceService";
 export * from "./proposal-service/extra-service/ExtraService";
+export * from "./proposal-service/summary-service/summariesService";

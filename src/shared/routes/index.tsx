@@ -100,6 +100,12 @@ const ExtrasRouter = lazy(() =>
   })),
 );
 
+const SummaryRouter = lazy(() =>
+  import("@/pages/private/EditProposal/Summaries").then((module) => ({
+    default: module.Summaries,
+  })),
+);
+
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
@@ -183,7 +189,7 @@ export function Router(): ReactElement {
                 <Route path="experiences" element={<ExperiencesRouter />} />
                 <Route path="insurance" element={<InsurancesRouter />} />
                 <Route path="extras" element={<ExtrasRouter />} />
-                <Route path="summary" element={<h2>Resumo</h2>} />
+                <Route path="summary" element={<SummaryRouter />} />
               </Route>
             </Route>
           </Route>
