@@ -33,57 +33,55 @@ function SummaryItem({ summary }: { summary: Summary }) {
 
   return (
     <Accordion type="single" collapsible>
-    <AccordionItem value="item-1" className="rounded-xl bg-white p-4 shadow-md">
-      <AccordionTrigger className="flex justify-between">
-        <div className="flex-1">
-          <span className="flex items-center gap-5 text-lg font-medium capitalize">
-            {summary.totalValue && Number(summary.totalValue) > 0 && (
-              <span className="text-sm text-gray-500">– R$ {Number(summary.totalValue).toFixed(2)}</span>
-            )}
-          </span>
-  
-          <div className="mt-1 text-sm text-zinc-900">
-            <p className="line-clamp-2">{summary.includedInProposal}</p>
+      <AccordionItem value="item-1" className="rounded-xl bg-white p-4 shadow-md">
+        <AccordionTrigger className="flex justify-between">
+          <div className="flex-1">
+            <div className="mt-1 text-sm text-zinc-900">
+              <p className="line-clamp-2">
+                {summary.includedInProposal}
+                {summary.totalValue && Number(summary.totalValue) > 0 && (
+                  <span className="text-sm text-gray-500"> – R$ {Number(summary.totalValue).toFixed(2)}</span>
+                )}
+              </p>
+            </div>
+
+            <div className="mt-2 space-y-1 text-xs text-gray-400">
+              <p>Criado em: {moment(summary.createdAt).format("DD/MM/YYYY HH:mm")}</p>
+              <p>Atualizado em: {moment(summary.updatedAt).format("DD/MM/YYYY HH:mm")}</p>
+            </div>
           </div>
-  
-          <div className="mt-2 space-y-1 text-xs text-gray-400">
-            <p>Criado em: {moment(summary.createdAt).format("DD/MM/YYYY HH:mm")}</p>
-            <p>Atualizado em: {moment(summary.updatedAt).format("DD/MM/YYYY HH:mm")}</p>
+
+          <div className="ml-4 flex items-center gap-2">
+            <Button size="icon">
+              <FiEdit2 />
+            </Button>
+            <Button
+              disabled={isLoadingDeleteSummary}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
+              size="icon"
+              variant="destructive"
+            >
+              {isLoadingDeleteSummary ? <CgSpinner className="animate-spin" /> : <HiOutlineTrash />}
+            </Button>
           </div>
-        </div>
-  
-        <div className="ml-4 flex items-center gap-2">
-          <Button size="icon">
-            <FiEdit2 />
-          </Button>
-          <Button
-            disabled={isLoadingDeleteSummary}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete();
+        </AccordionTrigger>
+
+        <AccordionContent>
+          <Separator className="my-6" />
+          <EditSummaryForm
+            summaryId={summary.id}
+            defaultValues={{
+              includedInProposal: summary.includedInProposal,
+              totalValue: Number(summary.totalValue) ?? 0,
+              conditionsAndValidity: summary.conditionsAndValidity ?? "",
             }}
-            size="icon"
-            variant="destructive"
-          >
-            {isLoadingDeleteSummary ? <CgSpinner className="animate-spin" /> : <HiOutlineTrash />}
-          </Button>
-        </div>
-      </AccordionTrigger>
-  
-      <AccordionContent>
-        <Separator className="my-6" />
-        <EditSummaryForm
-          summaryId={summary.id}
-          defaultValues={{
-            includedInProposal: summary.includedInProposal,
-            totalValue: Number(summary.totalValue) ?? 0,
-            conditionsAndValidity: summary.conditionsAndValidity ?? "",
-          }}
-        />
-      </AccordionContent>
-    </AccordionItem>
-  </Accordion>
-  
+          />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 
