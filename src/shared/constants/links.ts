@@ -18,7 +18,7 @@ export const routes: Route[] = [
   },
   {
     label: "Clientes",
-    pathname: "clients",
+    pathname: "costumers",
     Icon: LuUsers,
   },
   {

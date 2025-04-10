@@ -1,6 +1,6 @@
 import { IconType } from "react-icons/lib";
 
-export type RoutePath = "/" | "proposals" | "clients" | "agency";
+export type RoutePath = "/" | "proposals" | "costumers" | "agency";
 
 export interface Route {
   pathname: RoutePath;

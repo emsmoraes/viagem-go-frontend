@@ -28,9 +28,15 @@ const ProposalsRouter = lazy(() =>
   })),
 );
 
-const ClientsRouter = lazy(() =>
-  import("@/pages/private/Clients").then((module) => ({
-    default: module.Clients,
+const CustomersRouter = lazy(() =>
+  import("@/pages/private/Customers").then((module) => ({
+    default: module.Customers,
+  })),
+);
+
+const AddCustomerRouter = lazy(() =>
+  import("@/pages/private/AddCostumer").then((module) => ({
+    default: module.AddCostumer,
   })),
 );
 
@@ -168,7 +174,8 @@ export function Router(): ReactElement {
           <Route element={<Private />}>
             <Route element={<Dashboard />}>
               <Route path="/" element={<HomeRouter />} />
-              <Route path="clients" element={<ClientsRouter />} />
+              <Route path="costumers" element={<CustomersRouter />} />
+              <Route path="costumers/new" element={<AddCustomerRouter />} />
               <Route path="agency" element={<AgencyRouter />} />
               <Route path="profile" element={<UserProfileRouter />} />
               <Route path="proposals" element={<ProposalsRouter />} />
