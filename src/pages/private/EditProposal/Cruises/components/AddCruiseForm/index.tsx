@@ -223,7 +223,7 @@ function AddCruiseForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
               <FormItem>
                 <FormLabel>Roteiro</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Santos - Rio - Salvador" {...field} />
+                  <Textarea placeholder="Ex: Santos - Rio - Salvador" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -237,7 +237,7 @@ function AddCruiseForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
               <FormItem>
                 <FormLabel>Formas de pagamento</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: PIX, Cartão, Boleto" {...field} />
+                  <Textarea placeholder="Ex: PIX, Cartão, Boleto" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

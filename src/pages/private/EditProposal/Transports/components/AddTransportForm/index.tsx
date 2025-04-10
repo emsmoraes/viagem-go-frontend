@@ -15,6 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CreateTransportRequest } from "@/shared/services/entities";
 import { useSteppers } from "../../../contexts/SteppersContext/useSteppers";
 import { useCreateTransportMutation } from "../../hooks/useTransport";
+import MoneyInput from "@/shared/components/Form/MoneyInput";
 
 const transportSchema = z.object({
   type: z.string().min(1, { message: "Tipo é obrigatório" }),
@@ -159,25 +160,7 @@ function AddTransportForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Preço</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    placeholder="Valor do transporte"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <MoneyInput placeholder="Digite o preço" form={form} name="price" label="Preço" />
         </div>
 
         <FormField

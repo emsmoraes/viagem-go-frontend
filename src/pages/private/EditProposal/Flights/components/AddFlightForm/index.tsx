@@ -214,7 +214,7 @@ function AddFlightForm({ setOpen }: { setOpen: React.Dispatch<React.SetStateActi
                   <SelectContent>
                     <SelectItem value="OUTBOUND">Ida</SelectItem>
                     <SelectItem value="INBOUND">Volta</SelectItem>
-                    <SelectItem value="INTERNAL">Interno</SelectItem>
+                    <SelectItem value="INTERNAL">Voos internos</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
