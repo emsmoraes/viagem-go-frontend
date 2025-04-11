@@ -1,0 +1,18 @@
+export const estilosDeViagem: string[] = [
+  "Romântica",
+  "Educação",
+  "Religioso",
+  "Aventura",
+  "Relaxar e desconectar",
+  "Família",
+  "Exótico",
+  "Moda",
+  "Trabalho",
+  "Agito e badalação",
+  "Voluntariado",
+  "Bem estar",
+  "História e cultura",
+  "Tecnologia",
+  "Com crianças",
+  "Com amigos",
+];

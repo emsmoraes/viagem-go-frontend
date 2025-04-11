@@ -179,7 +179,7 @@ export function Router(): ReactElement {
               <Route path="agency" element={<AgencyRouter />} />
               <Route path="profile" element={<UserProfileRouter />} />
               <Route path="proposals" element={<ProposalsRouter />} />
-
+          
               <Route
                 path="proposals/:id"
                 element={

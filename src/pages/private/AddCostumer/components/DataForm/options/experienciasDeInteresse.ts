@@ -1,0 +1,15 @@
+export const experienciasDeInteresse: string[] = [
+  "Praia",
+  "Compras",
+  "Esportes",
+  "Campo",
+  "Cruzeiro",
+  "Vida noturna",
+  "Neve",
+  "Glamping",
+  "Museu e artes",
+  "Mergulho",
+  "Gastronomia",
+  "Nas alturas",
+  "Festivais",
+];
