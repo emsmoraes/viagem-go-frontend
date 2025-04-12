@@ -53,6 +53,7 @@ function AddDayByDay() {
   const [open, setOpen] = useState(false);
   const { proposal } = useSteppers();
   const queryClient = useQueryClient();
+  
   const {
     register,
     handleSubmit,

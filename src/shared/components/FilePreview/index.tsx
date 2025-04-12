@@ -5,7 +5,7 @@ import { HiOutlineTrash } from "react-icons/hi";
 interface FilePreviewProps {
   currentFile: File | string | null | undefined;
   className?: string;
-  onDelete: () => void; // Função de exclusão
+  onDelete?: () => void;
 }
 
 function FilePreview({ currentFile, className, onDelete }: FilePreviewProps) {
@@ -51,7 +51,7 @@ function FilePreview({ currentFile, className, onDelete }: FilePreviewProps) {
   return (
     <div className={className} style={{ position: "relative" }}>
       {renderIcon()}
-      {currentFile && (
+      {currentFile && onDelete && (
         <button
           onClick={onDelete}
           type="button"

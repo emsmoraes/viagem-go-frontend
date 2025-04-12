@@ -12,7 +12,7 @@ export const customerSchema = z.object({
     .refine((val) => !val || !isNaN(Date.parse(val)), {
       message: "Data de nascimento inválida.",
     }),
-  email: z.string().email().optional(),
+  email: z.string().email().optional().nullable(),
   phone: z.string().optional(),
   maritalStatus: z.string().optional(),
   profession: z.string().optional(),
@@ -35,4 +35,14 @@ export const customerSchema = z.object({
   tags: z.array(z.string()).optional(),
   observation: z.string().optional(),
   referralSource: z.string().optional(),
+  customerDocuments: z
+    .array(
+      z.object({
+        name: z.string({ required_error: "O nome do documento é obrigatório." }),
+        issueDate: z.string().optional(),
+        expirationDate: z.string().optional(),
+        files: z.array(z.instanceof(File)).optional(),
+      }),
+    )
+    .optional(),
 });
