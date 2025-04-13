@@ -25,9 +25,10 @@ export type AgencySchema = z.infer<typeof agencySchema>;
 interface AgencyInfosFormProps {
   defaultValues: AgencySchema;
   queryClient: QueryClient;
+  canEdit: boolean;
 }
 
-function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
+function AgencyInfosForm({ defaultValues, queryClient, canEdit }: AgencyInfosFormProps) {
   const { updateAgency, isLoadingUpdate } = useUpdateAgencyMutation({
     onSuccess: () => {
       toast("Informações da agência atualizadas com sucesso!");
@@ -46,7 +47,12 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
   const isFormDirty = Object.keys(form.formState.dirtyFields).length > 0;
 
   const onSubmit = (data: AgencySchema) => {
-    updateAgency(data);
+    if (canEdit) {
+      updateAgency(data);
+      form.reset({
+        ...data,
+      });
+    }
   };
 
   return (
@@ -62,6 +68,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
                   <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={!canEdit}
                       className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                       placeholder="Digite o nome da agência"
                       {...field}
@@ -73,6 +80,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
             />
 
             <MaskedInput
+              disabled={!canEdit}
               control={form.control}
               name="whatsapp"
               label="WhatsApp"
@@ -80,6 +88,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
               className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
             />
             <MaskedInput
+              disabled={!canEdit}
               control={form.control}
               name="phone"
               label="Telefone"
@@ -95,6 +104,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
                   <FormLabel>Website</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={!canEdit}
                       className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                       placeholder="Digite a URL do site"
                       {...field}
@@ -113,6 +123,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
                   <FormLabel>Instagram</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={!canEdit}
                       className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                       placeholder="Digite o @ do Instagram"
                       {...field}
@@ -131,6 +142,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
                   <FormLabel>Link de Localização</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={!canEdit}
                       className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                       placeholder="Cole o link do Google Maps"
                       {...field}
@@ -149,6 +161,7 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
                   <FormLabel>Descrição</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={!canEdit}
                       className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                       placeholder="Digite uma breve descrição"
                       {...field}
@@ -161,7 +174,11 @@ function AgencyInfosForm({ defaultValues, queryClient }: AgencyInfosFormProps) {
           </div>
 
           <div className="flex w-full justify-end">
-            <Button type="submit" className="h-[50px] px-5 text-[16px] font-[400]" disabled={!isFormDirty || isLoadingUpdate}>
+            <Button
+              type="submit"
+              className="h-[50px] px-5 text-[16px] font-[400]"
+              disabled={!isFormDirty || isLoadingUpdate}
+            >
               {isLoadingUpdate ? <CgSpinner className="animate-spin" /> : "Salvar alterações"}
             </Button>
           </div>

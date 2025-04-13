@@ -62,7 +62,7 @@ const getCustomerById = async (id: string): Promise<Customer> => {
   }
 };
 
-const createCustomer = async (data: CreateCustomerRequest): Promise<void> => {
+const createCustomer = async (data: CreateCustomerRequest): Promise<{ costumerId: string }> => {
   try {
     const formData = new FormData();
 
@@ -110,11 +110,13 @@ const createCustomer = async (data: CreateCustomerRequest): Promise<void> => {
       formData.append("image", data.image);
     }
 
-    await api.post("/customers", formData, {
+    const response = await api.post<{ costumerId: string }>("/customers", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+
+    return response.data;
   } catch (error) {
     throw new ApiException(error instanceof Error ? error.message : "Erro desconhecido");
   }

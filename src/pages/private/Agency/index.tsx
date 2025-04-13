@@ -9,10 +9,14 @@ import AgencyUsers from "./components/AgencyUsers";
 import { Separator } from "@/shared/components/ui/separator";
 import InviteUserModal from "./components/InviteUserModal";
 import clsx from "clsx";
+import { authStore } from "@/shared/store/auth.store";
 
 export function Agency() {
   const { agency, isLoadingAgency } = useGetAgencyQuery();
+  const { user } = authStore();
   const queryClient = useQueryClient();
+
+  const canEdit = user?.userRoles.some((r) => r.role === "OWNER") || false;
 
   if (isLoadingAgency) {
     return (
@@ -29,12 +33,13 @@ export function Agency() {
   return (
     <div className="flex h-full flex-col">
       <div className={clsx("flex-1 overflow-y-auto pb-6")}>
-        <h1 className="mb-8 pt-3 text-xl font-medium">Editar agencia</h1>
+        <h1 className="mb-8 pt-3 text-xl font-medium">{canEdit ? "Editar agencia" : "Ver agencia"}</h1>
 
         <div className="flex w-full flex-wrap gap-12">
-          <AgencyLogo agency={agency} queryClient={queryClient} />
+          <AgencyLogo agency={agency} queryClient={queryClient} canEdit={canEdit} />
 
           <AgencyInfosForm
+            canEdit={canEdit}
             queryClient={queryClient}
             defaultValues={{
               name: agency.name ?? "",
@@ -54,7 +59,7 @@ export function Agency() {
           <div className="lg:pr-6">
             <div className="mb-8 flex items-center gap-4">
               <h1 className="text-xl font-medium">Usuários</h1>
-              <InviteUserModal agencyId={agency.id} />
+              {canEdit && <InviteUserModal agencyId={agency.id} />}
             </div>
             <AgencyUsers users={agency.users} />
           </div>

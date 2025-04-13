@@ -20,6 +20,11 @@ import { Button } from "@/shared/components/ui/button";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Separator } from "@/shared/components/ui/separator";
 import DataFormDocuments from "../DataFormDocuments";
+import { toast } from "sonner";
+import { CgSpinner } from "react-icons/cg";
+import { CreateCustomerRequest, CustomerService } from "@/shared/services/entities";
+import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
 
 export type CustomerSchema = z.infer<typeof customerSchema>;
 const CostumerAvatarPlaceholder = () => <PiUserLight size={100} className="text-primary group-hover:text-primary/80" />;
@@ -41,7 +46,7 @@ function DataForm() {
       rg: "",
       cpf: "",
       birthDate: "",
-      email: "",
+      email: undefined,
       phone: "",
       maritalStatus: "",
       profession: "",
@@ -69,16 +74,21 @@ function DataForm() {
     },
   });
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    trigger,
-    reset,
-    control,
-    formState: { errors },
-    watch,
-  } = form;
+  const { handleSubmit, setValue, trigger, control, watch } = form;
+
+  const { mutate: createCustomer, isPending: isPendingCostumer } = useMutation({
+    mutationFn: async (data: CreateCustomerRequest) => {
+      const response = await CustomerService.createCustomer(data);
+      return response;
+    },
+    onError: (error: AxiosError) => {
+      toast.error(`Erro ao criar cliente: ${error.message}`);
+    },
+    onSuccess: (data) => {
+      const { costumerId } = data;
+      toast.success(`Cliente criado com sucesso! ID: ${costumerId}`);
+    },
+  });
 
   const handleImageChange = (file: File | null) => {
     setValue("profileImage", file, { shouldDirty: true });
@@ -91,9 +101,9 @@ function DataForm() {
       cover: data.profileImage instanceof File ? data.profileImage : undefined,
     };
 
-    console.log("Payload:", payload);
+    const { customerDocuments, ...restPayload } = payload;
 
-    reset({ ...data });
+    createCustomer(restPayload);
   };
 
   return (
@@ -108,7 +118,7 @@ function DataForm() {
         />
       </div>
       <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="relative pb-26">
           <div className="space-y-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               <FormField
@@ -207,7 +217,7 @@ function DataForm() {
 
             {showRest && (
               <>
-                <div className="space-y-8">
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                   <FormField
                     control={control}
                     name="rg"
@@ -277,10 +287,11 @@ function DataForm() {
                         <FormLabel>Número de Filhos</FormLabel>
                         <FormControl>
                           <Input
-                            className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
                             type="number"
                             placeholder="Ex: 2"
-                            {...field}
+                            className="h-auto w-full border border-gray-700 py-3 pr-10 pl-5 focus:border-gray-500 focus:ring-0 md:text-lg"
+                            value={field.value ?? ""}
+                            onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
                           />
                         </FormControl>
                         <FormMessage />
@@ -517,6 +528,11 @@ function DataForm() {
                 Exibir tudo {showRest ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </Button>
             </div>
+          </div>
+          <div className="sticky right-0 bottom-5 flex items-center justify-end">
+            <Button className="h-full max-h-full px-5 text-[16px] font-[400] [&_svg:not([class*='size-'])]:size-6">
+              {isPendingCostumer ? <CgSpinner className="animate-spin" /> : "Salvar"}
+            </Button>
           </div>
         </form>
       </Form>

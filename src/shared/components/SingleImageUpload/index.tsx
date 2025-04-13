@@ -20,6 +20,7 @@ interface SingleImageUploadProps {
   isPending?: boolean;
   errorMessage?: string;
   hiddenDelete?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -31,6 +32,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   errorMessage,
   hiddenDelete = false,
   className,
+  disabled,
 }) => {
   const imageUrl =
     currentImage instanceof File
@@ -40,7 +42,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
         : null;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (isPending) return;
+    if (isPending || disabled) return;
     const file = event.target.files?.[0] || null;
     event.target.value = "";
     onChange?.(file);
@@ -55,7 +57,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
     <div className="flex flex-col items-center gap-2">
       {imageUrl ? (
         <div className="relative rounded-full">
-          <label htmlFor="file-input" className="cursor-pointer">
+          <label htmlFor={disabled ? "" : "file-input"} className={!disabled ? "cursor-pointer" : ""}>
             <img
               src={imageUrl}
               alt="Preview"
@@ -68,7 +70,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
             accept="image/*"
             className="hidden"
             onChange={handleFileChange}
-            disabled={isPending}
+            disabled={isPending || disabled}
           />
 
           <Dialog>
@@ -107,12 +109,13 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
         </div>
       ) : (
         <label
-          htmlFor="file-input"
+          htmlFor={!disabled ? "file-input" : ""}
           className={cn(
-            "border-primary hover:border-primary/80 group flex h-40 w-40 cursor-pointer flex-col items-center justify-center rounded-full border-3 border-dashed",
+            "border-primary hover:border-primary/80 group flex h-40 w-40 flex-col items-center justify-center rounded-full border-3 border-dashed",
             className,
             {
-              "cursor-not-allowed opacity-50": isPending,
+              "cursor-not-allowed opacity-50": disabled || isPending,
+              "cursor-pointer": !disabled && !isPending,
             },
           )}
         >
@@ -127,7 +130,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
             accept="image/*"
             className="hidden"
             onChange={handleFileChange}
-            disabled={isPending}
+            disabled={disabled || isPending}
           />
         </label>
       )}

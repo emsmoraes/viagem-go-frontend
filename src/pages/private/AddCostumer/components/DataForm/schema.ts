@@ -2,17 +2,20 @@ import { z } from "zod";
 
 export const customerSchema = z.object({
   profileImage: z.instanceof(File).optional().nullable(),
-  fullName: z.string({ required_error: "O nome completo é obrigatório." }),
+  fullName: z
+    .string({ required_error: "O nome completo é obrigatório." })
+    .trim()
+    .min(1, { message: "O nome completo é obrigatório." }),
   nickname: z.string().optional(),
   rg: z.string().optional(),
   cpf: z.string().optional(),
   birthDate: z
-    .union([z.string().datetime(), z.literal("").optional(), z.null()])
+    .union([z.string().datetime(), z.literal("").optional()])
     .optional()
     .refine((val) => !val || !isNaN(Date.parse(val)), {
       message: "Data de nascimento inválida.",
     }),
-  email: z.string().email().optional().nullable(),
+  email: z.string().email().optional(),
   phone: z.string().optional(),
   maritalStatus: z.string().optional(),
   profession: z.string().optional(),

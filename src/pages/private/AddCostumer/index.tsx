@@ -11,7 +11,7 @@ export function AddCostumer() {
           <h1 className="text-xl font-medium">Adicionar cliente</h1>
         </div>
 
-        <div className="pb-6 lg:pr-6">
+        <div className="lg:pr-6">
           <DataForm />
         </div>
       </ScrollArea>

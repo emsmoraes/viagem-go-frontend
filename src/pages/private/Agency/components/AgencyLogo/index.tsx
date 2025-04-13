@@ -9,9 +9,10 @@ import { toast } from "sonner";
 interface AgencyLogoProps {
   agency: Agency;
   queryClient: QueryClient;
+  canEdit: boolean;
 }
 
-function AgencyLogo({ agency, queryClient }: AgencyLogoProps) {
+function AgencyLogo({ agency, queryClient, canEdit }: AgencyLogoProps) {
   const [logo, setLogo] = useState<File | string | null>(agency?.logoUrl || null);
   const [isPending, startTransition] = useTransition();
 
@@ -54,6 +55,8 @@ function AgencyLogo({ agency, queryClient }: AgencyLogoProps) {
       onChange={handleImageChange}
       ImagePickerPlaceholder={AgencyLogoPlaceholder}
       isPending={isPending}
+      disabled={!canEdit}
+      hiddenDelete={!canEdit}
     />
   );
 }

@@ -50,19 +50,6 @@ export function useCustomersQuery({ search, page }: UseCustomersQueryProps): Use
   };
 }
 
-export function useCreateCustomerMutation({ onSuccess, onError }: CreateCustomerMutationProps) {
-  const queryClient = useQueryClient();
-
-  return useMutation<void, AxiosError, CreateCustomerRequest>({
-    mutationFn: async (data) => CustomerService.createCustomer(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-      onSuccess?.();
-    },
-    onError,
-  });
-}
-
 export function useUpdateCustomerMutation({ onSuccess, onError }: UpdateCustomerMutationProps) {
   const queryClient = useQueryClient();
 

@@ -48,6 +48,7 @@ function UserProfileInfosForm({ defaultValues, userId }: UserProfileInfosFormPro
         ...state,
         user: { ...state.user, ...updatedUser },
       }));
+
       toast("Perfil atualizado com sucesso!");
     },
     onError: () => {
@@ -68,6 +69,10 @@ function UserProfileInfosForm({ defaultValues, userId }: UserProfileInfosFormPro
     updateUserProfile({
       userId: userId,
       data: filteredData,
+    });
+
+    form.reset({
+      ...data,
     });
   };
 
