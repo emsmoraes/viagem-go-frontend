@@ -2,11 +2,13 @@ import api from "@/shared/services/axios/api";
 import { ApiException } from "@/shared/services/api-exception/ApiException";
 
 export interface CreateCustomerDocumentRequest {
-  name: string;
-  issueDate?: string;
-  expirationDate?: string;
   customerId: string;
-  documents: File[];
+  documents: {
+    name: string;
+    issueDate?: string;
+    expirationDate?: string;
+    files?: File[];
+  }[];
 }
 
 interface UpdateCustomerDocumentRequest {
@@ -19,29 +21,35 @@ interface UpdateCustomerDocumentRequest {
 }
 
 const createCustomerDocument = async (data: CreateCustomerDocumentRequest): Promise<void> => {
-  try {
-    if (!data.documents || data.documents.length === 0) {
-      throw new ApiException("Pelo menos um documento é obrigatório.");
+  const formData = new FormData();
+
+  formData.append("customerId", data.customerId);
+
+  data.documents.forEach((document, index) => {
+    formData.append(`documents[${index}][name]`, document.name);
+
+    if (document.issueDate) {
+      formData.append(`documents[${index}][issueDate]`, document.issueDate);
     }
 
-    const formData = new FormData();
+    if (document.expirationDate) {
+      formData.append(`documents[${index}][expirationDate]`, document.expirationDate);
+    }
 
-    formData.append("name", data.name);
-    formData.append("customerId", data.customerId);
-    if (data.issueDate) formData.append("issueDate", data.issueDate);
-    if (data.expirationDate) formData.append("expirationDate", data.expirationDate);
+    document.files &&
+      document.files.forEach((file, fileIndex) => {
+        formData.append(`documents[${index}][files][${fileIndex}]`, file);
+      });
+  });
 
-    data.documents.forEach((file) => {
-      formData.append("documents", file);
-    });
-
+  try {
     await api.post("/customer-document", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
   } catch (error) {
-    throw new ApiException(error instanceof Error ? error.message : "Erro ao criar documento do cliente");
+    console.error("Error:", error);
   }
 };
 

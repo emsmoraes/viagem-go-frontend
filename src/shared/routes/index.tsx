@@ -174,8 +174,8 @@ export function Router(): ReactElement {
           <Route element={<Private />}>
             <Route element={<Dashboard />}>
               <Route path="/" element={<HomeRouter />} />
-              <Route path="costumers" element={<CustomersRouter />} />
-              <Route path="costumers/new" element={<AddCustomerRouter />} />
+              <Route path="customers" element={<CustomersRouter />} />
+              <Route path="customers/new" element={<AddCustomerRouter />} />
               <Route path="agency" element={<AgencyRouter />} />
               <Route path="profile" element={<UserProfileRouter />} />
               <Route path="proposals" element={<ProposalsRouter />} />

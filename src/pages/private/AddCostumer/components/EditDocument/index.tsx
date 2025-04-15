@@ -25,8 +25,8 @@ import { CustomerDocument } from "../DataFormDocuments";
 
 const documentSchema = z.object({
   name: z.string().trim().min(1, "O nome do documento é obrigatório."),
-  issueDate: z.date().optional(),
-  expirationDate: z.date().optional(),
+  issueDate: z.string().optional(),
+  expirationDate: z.string().optional(),
   files: z.array(z.instanceof(File)).optional(),
 });
 
@@ -78,7 +78,7 @@ function EditDocument({ index, editDocument, defaultValues }: EditDocumentProps)
 
   return (
     <>
-      <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
+      <Button type="button" variant="ghost" size="icon" onClick={() => setOpen(true)}>
         <FaEdit className="h-4 w-4" />
       </Button>
 
@@ -115,7 +115,9 @@ function EditDocument({ index, editDocument, defaultValues }: EditDocumentProps)
                       <FormControl>
                         <DatePickerInput
                           value={field.value ? new Date(field.value) : undefined}
-                          onChange={(date) => field.onChange(date)}
+                          onChange={(date) => {
+                            field.onChange(date ? date.toISOString() : null);
+                          }}
                           placeholder="Data de expedição"
                         />
                       </FormControl>
@@ -132,7 +134,9 @@ function EditDocument({ index, editDocument, defaultValues }: EditDocumentProps)
                       <FormControl>
                         <DatePickerInput
                           value={field.value ? new Date(field.value) : undefined}
-                          onChange={(date) => field.onChange(date)}
+                          onChange={(date) => {
+                            field.onChange(date ? date.toISOString() : null);
+                          }}
                           placeholder="Data de validade"
                         />
                       </FormControl>
@@ -142,7 +146,7 @@ function EditDocument({ index, editDocument, defaultValues }: EditDocumentProps)
                 />
               </div>
 
-              <div className="mb-5 flex flex-wrap gap-3 mt-5">
+              <div className="mt-5 mb-5 flex flex-wrap gap-3">
                 <MultipleImageUpload
                   inputClassName="w-16 h-16 rounded-md"
                   ImagePickerPlaceholder={DocumentPlaceholder}

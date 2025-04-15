@@ -30,18 +30,18 @@ export function useCreateCustomerDocumentMutation({ onSuccess, onError }: Create
   });
 }
 
-export function useUpdateCustomerDocumentMutation({ onSuccess, onError }: UpdateCustomerDocumentMutationProps) {
-  const queryClient = useQueryClient();
+// export function useUpdateCustomerDocumentMutation({ onSuccess, onError }: UpdateCustomerDocumentMutationProps) {
+//   const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError, { id: string; data: Partial<CreateCustomerDocumentRequest> }>({
-    mutationFn: ({ id, data }) => CustomerDocumentService.updateCustomerDocument(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customer-documents"] });
-      onSuccess?.();
-    },
-    onError,
-  });
-}
+//   return useMutation<void, AxiosError, { id: string; data: Partial<CreateCustomerDocumentRequest> }>({
+//     mutationFn: ({ id, data }) => CustomerDocumentService.updateCustomerDocument(id, data),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ["customer-documents"] });
+//       onSuccess?.();
+//     },
+//     onError,
+//   });
+// }
 
 export function useDeleteCustomerDocumentMutation({ onSuccess, onError }: DeleteCustomerDocumentMutationProps) {
   const queryClient = useQueryClient();

@@ -25,6 +25,8 @@ import { CgSpinner } from "react-icons/cg";
 import { CreateCustomerRequest, CustomerService } from "@/shared/services/entities";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { useCreateCustomerDocumentMutation } from "@/pages/private/Customers/hooks/useCustomerDocument";
+import { useNavigate } from "react-router-dom";
 
 export type CustomerSchema = z.infer<typeof customerSchema>;
 const CostumerAvatarPlaceholder = () => <PiUserLight size={100} className="text-primary group-hover:text-primary/80" />;
@@ -38,6 +40,7 @@ const fields = [
 
 function DataForm() {
   const [showRest, setShowRest] = useState(false);
+  const navigate = useNavigate();
   const form = useForm<CustomerSchema>({
     resolver: zodResolver(customerSchema),
     defaultValues: {
@@ -76,19 +79,39 @@ function DataForm() {
 
   const { handleSubmit, setValue, trigger, control, watch } = form;
 
+  const { mutate: createCustomerDocument, isPending: isPendingCostumerDocuments } = useCreateCustomerDocumentMutation({
+    onError: () => {
+      navigate("/customers");
+    },
+    onSuccess: () => {
+      navigate("/customers");
+    },
+  });
+
   const { mutate: createCustomer, isPending: isPendingCostumer } = useMutation({
-    mutationFn: async (data: CreateCustomerRequest) => {
-      const response = await CustomerService.createCustomer(data);
-      return response;
+    mutationFn: async (data: CustomerSchema) => {
+      const { customerDocuments, ...restPayload } = data;
+      const response = await CustomerService.createCustomer(restPayload);
+      return {
+        ...response,
+        customerDocuments,
+      };
     },
     onError: (error: AxiosError) => {
       toast.error(`Erro ao criar cliente: ${error.message}`);
     },
-    onSuccess: (data) => {
-      const { costumerId } = data;
-      toast.success(`Cliente criado com sucesso! ID: ${costumerId}`);
+    onSuccess: async (data) => {
+      const { costumerId, customerDocuments } = data;
+      await createCustomerDocument({
+        customerId: costumerId,
+        documents: customerDocuments || [],
+      });
+
+      toast.success("Cliente criado com sucesso!");
     },
   });
+
+  const isPending = isPendingCostumerDocuments || isPendingCostumer;
 
   const handleImageChange = (file: File | null) => {
     setValue("profileImage", file, { shouldDirty: true });
@@ -101,9 +124,7 @@ function DataForm() {
       cover: data.profileImage instanceof File ? data.profileImage : undefined,
     };
 
-    const { customerDocuments, ...restPayload } = payload;
-
-    createCustomer(restPayload);
+    createCustomer(payload);
   };
 
   return (
@@ -530,8 +551,11 @@ function DataForm() {
             </div>
           </div>
           <div className="sticky right-0 bottom-5 flex items-center justify-end">
-            <Button className="h-full max-h-full px-5 text-[16px] font-[400] [&_svg:not([class*='size-'])]:size-6">
-              {isPendingCostumer ? <CgSpinner className="animate-spin" /> : "Salvar"}
+            <Button
+              disabled={isPending}
+              className="h-full max-h-full px-5 text-[16px] font-[400] [&_svg:not([class*='size-'])]:size-6"
+            >
+              {isPending ? <CgSpinner className="animate-spin" /> : "Salvar"}
             </Button>
           </div>
         </form>

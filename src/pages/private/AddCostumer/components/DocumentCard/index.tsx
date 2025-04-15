@@ -9,13 +9,12 @@ import FilePreview from "@/shared/components/FilePreview";
 
 interface DocumentCardProps {
   document: CustomerDocument;
-  onDelete?: () => void;
   index: number;
   editDocument: (index: number, updatedDoc: Partial<CustomerDocument>) => void;
   removeDocument: (index: number) => void;
 }
 
-function DocumentCard({ document, editDocument, onDelete, index, removeDocument }: DocumentCardProps) {
+function DocumentCard({ document, editDocument, index, removeDocument }: DocumentCardProps) {
   const { name, issueDate, expirationDate, files } = document;
 
   const formatDate = (date?: string) => {
@@ -32,9 +31,9 @@ function DocumentCard({ document, editDocument, onDelete, index, removeDocument 
           <EditDocument
             defaultValues={{
               name: document.name,
-              expirationDate: document.expirationDate ? new Date(document.expirationDate) : undefined,
+              expirationDate: document.expirationDate || "",
               files: document.files,
-              issueDate: document.issueDate ? new Date(document.issueDate) : undefined,
+              issueDate: document.issueDate || "",
             }}
             editDocument={editDocument}
             index={index}

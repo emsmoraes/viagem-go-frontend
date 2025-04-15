@@ -1,7 +1,16 @@
+import { useState } from "react";
+
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+
+import { Input } from "@/shared/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/shared/components/ui/button";
 import FilePreview from "@/shared/components/FilePreview";
-import { DatePickerInput } from "@/shared/components/Form/DatePickerInput";
-import ImagePreview from "@/shared/components/ImagePreview";
+import { IoDocumentAttachOutline } from "react-icons/io5";
 import MultipleImageUpload from "@/shared/components/MultipleImageUpload";
+import { DatePickerInput } from "@/shared/components/Form/DatePickerInput";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -10,21 +19,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/shared/components/ui/alert-dialog";
-import { Button } from "@/shared/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { FaFilePdf } from "react-icons/fa";
-import { IoDocumentAttachOutline } from "react-icons/io5";
-import { z } from "zod";
+
 import { CustomerDocument } from "../DataFormDocuments";
 
 const documentSchema = z.object({
   name: z.string().trim().min(1, "O nome do documento é obrigatório."),
-  issueDate: z.date().optional(),
-  expirationDate: z.date().optional(),
+  issueDate: z.string().optional(),
+  expirationDate: z.string().optional(),
   files: z.array(z.instanceof(File)).optional(),
 });
 
@@ -67,7 +68,7 @@ function AddDocument({ addDocument }: AddDocumentProps) {
     addDocument({
       name: data.name,
       expirationDate: data.expirationDate?.toString(),
-      issueDate: data.expirationDate?.toString(),
+      issueDate: data.issueDate?.toString(),
       files: data.files,
     });
     setOpen(false);
@@ -111,7 +112,9 @@ function AddDocument({ addDocument }: AddDocumentProps) {
                       <FormControl>
                         <DatePickerInput
                           value={field.value ? new Date(field.value) : undefined}
-                          onChange={(date) => field.onChange(date)}
+                          onChange={(date) => {
+                            field.onChange(date ? date.toISOString() : null);
+                          }}
                           placeholder="Data de expedição"
                         />
                       </FormControl>
@@ -128,7 +131,9 @@ function AddDocument({ addDocument }: AddDocumentProps) {
                       <FormControl>
                         <DatePickerInput
                           value={field.value ? new Date(field.value) : undefined}
-                          onChange={(date) => field.onChange(date)}
+                          onChange={(date) => {
+                            field.onChange(date ? date.toISOString() : null);
+                          }}
                           placeholder="Data de validade"
                         />
                       </FormControl>
@@ -138,7 +143,7 @@ function AddDocument({ addDocument }: AddDocumentProps) {
                 />
               </div>
 
-              <div className="mb-5 flex flex-wrap gap-3 mt-5">
+              <div className="mt-5 mb-5 flex flex-wrap gap-3">
                 <MultipleImageUpload
                   inputClassName="w-16 h-16 rounded-md"
                   ImagePickerPlaceholder={DocumentPlaceholder}
