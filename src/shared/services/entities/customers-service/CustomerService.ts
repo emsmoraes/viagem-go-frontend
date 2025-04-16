@@ -3,7 +3,7 @@ import { ApiException } from "@/shared/services/api-exception/ApiException";
 import { Customer } from "@/shared/models/customer.model";
 
 interface GetProposalsResponse {
-  data: Customer[];
+  customers: Customer[];
   total: number;
   currentPage: number;
   totalPages: number;

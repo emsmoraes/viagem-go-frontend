@@ -102,10 +102,14 @@ function DataForm() {
     },
     onSuccess: async (data) => {
       const { costumerId, customerDocuments } = data;
-      await createCustomerDocument({
-        customerId: costumerId,
-        documents: customerDocuments || [],
-      });
+      if (customerDocuments && customerDocuments.length > 0) {
+        await createCustomerDocument({
+          customerId: costumerId,
+          documents: customerDocuments || [],
+        });
+      } else {
+        navigate("/customers");
+      }
 
       toast.success("Cliente criado com sucesso!");
     },
@@ -121,7 +125,7 @@ function DataForm() {
   const onSubmit = (data: CustomerSchema) => {
     const payload = {
       ...data,
-      cover: data.profileImage instanceof File ? data.profileImage : undefined,
+      image: data.profileImage instanceof File ? data.profileImage : undefined,
     };
 
     createCustomer(payload);

@@ -40,7 +40,7 @@ export function useCustomersQuery({ search, page }: UseCustomersQueryProps): Use
   });
 
   return {
-    customers: data?.data ?? [],
+    customers: data?.customers ?? [],
     total: data?.total ?? 0,
     currentPage: data?.currentPage ?? 1,
     totalPages: data?.totalPages ?? 1,
