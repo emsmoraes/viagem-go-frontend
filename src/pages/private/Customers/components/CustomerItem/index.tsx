@@ -1,10 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Customer } from "@/shared/models/customer.model";
 import { FiEdit3 } from "react-icons/fi";
-import { RiDeleteBinLine } from "react-icons/ri";
 import DeleteCostumer from "../DeleteCostumer";
+import { Link } from "react-router-dom";
 
 function CustomerItem({ customer }: { customer: Customer }) {
   return (
@@ -23,9 +22,12 @@ function CustomerItem({ customer }: { customer: Customer }) {
 
       <div className="flex h-full gap-2">
         <DeleteCostumer customerId={customer.id} />
-        <button className="text-primary aspect-square h-full rounded-full bg-blue-100 px-3">
+        <Link
+          to={`/customers/${customer.id}`}
+          className="text-primary aspect-square h-full rounded-full bg-blue-100 px-3 flex items-center justify-center"
+        >
           <FiEdit3 size={20} />
-        </button>
+        </Link>
       </div>
     </Card>
   );

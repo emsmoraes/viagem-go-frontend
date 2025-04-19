@@ -1,3 +1,5 @@
+import { CustomerDocument } from "./customer-document.model";
+
 export interface Customer {
   id: string;
   userId: string;
@@ -28,6 +30,7 @@ export interface Customer {
   dreamTrips: string[];
   recentTrips: string[];
   tags: string[];
+  documents: CustomerDocument[];
   observation: string | null;
   referralSource: string | null;
   createdAt: string;

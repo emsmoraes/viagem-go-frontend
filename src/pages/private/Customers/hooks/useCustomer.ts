@@ -18,6 +18,17 @@ interface UseCustomersQueryResult {
   errorCustomers: AxiosError | Error | null;
 }
 
+interface UseCustomerByIdQueryProps {
+  id: string;
+}
+
+interface UseCustomerByIdQueryResult {
+  customer: Customer | null;
+  isLoadingCustomer: boolean;
+  isErrorCustomer: boolean;
+  errorCustomer: AxiosError | Error | null;
+}
+
 interface CreateCustomerMutationProps {
   onSuccess?: () => void;
   onError?: (error: AxiosError | Error) => void;
@@ -74,4 +85,19 @@ export function useDeleteCustomerMutation({ onSuccess, onError }: DeleteCustomer
     },
     onError,
   });
+}
+
+export function useCustomerByIdQuery({ id }: UseCustomerByIdQueryProps): UseCustomerByIdQueryResult {
+  const { data, isLoading, isError, error } = useQuery<Customer, AxiosError | Error>({
+    queryKey: ["customer", id],
+    queryFn: async () => CustomerService.getCustomerById(id),
+    enabled: !!id,
+  });
+
+  return {
+    customer: data ?? null,
+    isLoadingCustomer: isLoading,
+    isErrorCustomer: isError,
+    errorCustomer: error,
+  };
 }

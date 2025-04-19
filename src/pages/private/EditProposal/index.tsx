@@ -1,9 +1,7 @@
 import { Separator } from "@/shared/components/ui/separator";
-import clsx from "clsx";
-import { Navigate, Outlet, useParams } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { CgSpinner } from "react-icons/cg";
 import EditProposalProfile from "./components/EditProposalProfile";
-import { useGetProposal } from "./hooks/useEditProposal";
 import StagesNav from "./components/StagesNav";
 import { useSteppers } from "./contexts/SteppersContext/useSteppers";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";

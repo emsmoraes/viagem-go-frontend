@@ -112,6 +112,12 @@ const SummaryRouter = lazy(() =>
   })),
 );
 
+const EditCustomer = lazy(() =>
+  import("@/pages/private/EditCustomer").then((module) => ({
+    default: module.EditCustomer,
+  })),
+);
+
 export function Router(): ReactElement {
   const navigate = useNavigate();
   const { logged } = authStore.getState().load();
@@ -198,6 +204,7 @@ export function Router(): ReactElement {
                 <Route path="extras" element={<ExtrasRouter />} />
                 <Route path="summary" element={<SummaryRouter />} />
               </Route>
+              <Route path="customers/:id" Component={EditCustomer} />
             </Route>
           </Route>
         )}
